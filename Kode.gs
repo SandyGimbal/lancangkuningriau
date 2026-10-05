@@ -53,9 +53,12 @@ const CONFIG = {
  * Mendapatkan instance Spreadsheet yang aktif atau via ID
  */
 function getDatabase_() {
-  if (CONFIG.SPREADSHEET_ID && CONFIG.SPREADSHEET_ID.trim() !== "") {
+  // Prioritas: Script Properties (Project Settings > Script Properties > SPREADSHEET_ID)
+  const propId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  const sheetId = (propId && propId.trim()) || (CONFIG.SPREADSHEET_ID || "").trim();
+  if (sheetId !== "") {
     try {
-      return SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+      return SpreadsheetApp.openById(sheetId);
     } catch(e) {
       Logger.log("Error opening spreadsheet by ID: " + e.toString());
     }
@@ -71,6 +74,11 @@ function getDatabase_() {
  */
 function doGet(e) {
   try {
+    // Health check API: https://script.google.com/.../exec?api=ping
+    if (e && e.parameter && e.parameter.api === "ping") {
+      return jsonResponse_({ success: true, message: "API Portal Desa Riau aktif", time: new Date().toISOString() });
+    }
+
     const page = (e && e.parameter && e.parameter.page) ? e.parameter.page.toLowerCase() : "";
 
     if (page === "admin") {
@@ -114,6 +122,76 @@ function doGet(e) {
       "</div>"
     );
   }
+}
+
+/**
+ * ==============================================================================
+ * JSON API UNTUK FRONTEND STATIS (VERCEL) - doPost(e)
+ * ==============================================================================
+ * Body (text/plain JSON): { action: "getPosts", args: [ ... ], token: "..." }
+ * Dipanggil otomatis oleh gas-bridge.js.
+ */
+const API_PUBLIC_ACTIONS_ = {
+  getPosts: getPosts,
+  getGallery: getGallery,
+  getPortalStats: getPortalStats,
+  loginAdmin: loginAdmin
+};
+
+const API_ADMIN_ACTIONS_ = {
+  uploadArticle: uploadArticle,
+  uploadDokumentasi: uploadDokumentasi,
+  adminGetDashboardStats: adminGetDashboardStats,
+  adminGetPosts: adminGetPosts,
+  adminUpdatePostStatus: adminUpdatePostStatus,
+  adminUpdatePost: adminUpdatePost,
+  adminDeletePost: adminDeletePost,
+  adminGetGallery: adminGetGallery,
+  adminUpdateGalleryStatus: adminUpdateGalleryStatus,
+  adminDeleteGallery: adminDeleteGallery,
+  adminGetAdmins: adminGetAdmins
+};
+
+function doPost(e) {
+  try {
+    const body = JSON.parse((e && e.postData && e.postData.contents) || "{}");
+    const action = String(body.action || "");
+    const args = Array.isArray(body.args) ? body.args : [];
+
+    if (API_PUBLIC_ACTIONS_.hasOwnProperty(action)) {
+      return jsonResponse_(API_PUBLIC_ACTIONS_[action].apply(null, args));
+    }
+
+    if (API_ADMIN_ACTIONS_.hasOwnProperty(action)) {
+      if (!verifySessionToken_(body.token)) {
+        return jsonResponse_({ success: false, authError: true, message: "Sesi login berakhir atau tidak valid. Silakan login kembali." });
+      }
+      return jsonResponse_(API_ADMIN_ACTIONS_[action].apply(null, args));
+    }
+
+    return jsonResponse_({ success: false, message: "Aksi API tidak dikenal: " + action });
+  } catch (err) {
+    return jsonResponse_({ success: false, message: "Kesalahan server: " + err.toString() });
+  }
+}
+
+function jsonResponse_(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+const SESSION_TTL_SECONDS_ = 6 * 60 * 60; // 6 jam (batas maksimum CacheService)
+
+function createSessionToken_(username) {
+  const token = Utilities.getUuid() + Utilities.getUuid().replace(/-/g, "");
+  CacheService.getScriptCache().put("sess_" + token, username, SESSION_TTL_SECONDS_);
+  return token;
+}
+
+function verifySessionToken_(token) {
+  if (!token || typeof token !== "string") return false;
+  return CacheService.getScriptCache().get("sess_" + token) !== null;
 }
 
 /**
@@ -167,13 +245,8 @@ function loginAdmin(credentials) {
           return { success: false, message: "Akun admin ini dinonaktifkan oleh sistem." };
         }
 
-        // Generate token sesi sederhana berbasis timestamp
-        const sessionToken = Utilities.base64Encode(
-          Utilities.computeDigest(
-            Utilities.DigestAlgorithm.SHA_256, 
-            dbUsername + "_" + new Date().getTime() + "_" + Session.getTemporaryActiveUserKey()
-          )
-        );
+        // Token sesi acak, disimpan di CacheService untuk verifikasi API admin
+        const sessionToken = createSessionToken_(dbUsername);
 
         return {
           success: true,

@@ -6,6 +6,9 @@
   <title>Panel Admin | Portal Agregator Desa Se-Provinsi Riau</title>
   <meta name="robots" content="noindex, nofollow">
 
+  <!-- Bridge ke Google Apps Script (Google Sheets database) saat di-hosting statis -->
+  <script src="gas-bridge.js"></script>
+
   <!-- Google Fonts: Plus Jakarta Sans, Outfit & Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,18 +187,13 @@
         </button>
       </form>
 
-      <!-- Petunjuk Kredensial Terdaftar -->
+      <!-- Info Akun -->
       <div class="text-[11px] text-gray-400 bg-riau-obsidian/70 p-3.5 rounded-2xl border border-white/5 space-y-1 relative z-10">
         <div class="font-semibold text-amber-300 flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-check text-emerald-400"></i> Akun Pengelola Default Terdaftar:
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i> Akses Khusus Pengelola
         </div>
-        <div class="flex items-center justify-between text-gray-300 pt-1 border-t border-white/5">
-          <span>Super Admin:</span>
-          <span class="font-mono text-white">admin_riau / RiauMaju2026!</span>
-        </div>
-        <div class="flex items-center justify-between text-gray-300">
-          <span>Verifikator:</span>
-          <span class="font-mono text-white">admin_desa / DesaRiau2026!</span>
+        <div class="text-gray-300 pt-1 border-t border-white/5">
+          Akun dikelola melalui tab <span class="font-mono text-white">Tbl_Admin</span> di Google Sheets.
         </div>
       </div>
 
@@ -1739,31 +1737,17 @@
           })
           .loginAdmin({ username: user, password: pass });
       } else {
-        // Simulasi Lokal Offline / Laragon
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali';
-          if ((user === 'admin_riau' && pass === 'RiauMaju2026!') || (user === 'admin_desa' && pass === 'DesaRiau2026!')) {
-            const mockUser = {
-              username: user,
-              nama_lengkap: user === 'admin_riau' ? 'Tim Redaksi Lancang Kuning' : 'Koordinator Publikasi Desa',
-              role: user === 'admin_riau' ? 'Super Administrator' : 'Verifikator Warta',
-              email: 'redaksi@portaldesariau.id'
-            };
-            sessionStorage.setItem('admin_session_auth', JSON.stringify(mockUser));
-            ADMIN_STATE.currentUser = mockUser;
-            showToast(`Login Berhasil! Selamat datang, ${mockUser.nama_lengkap}`, "success");
-            showDashboardView(mockUser);
-          } else {
-            showToast("Username atau kata sandi tidak cocok dengan data Tbl_Admin!", "error");
-          }
-        }, 500);
+        // Backend belum terhubung (API_URL di gas-bridge.js belum diisi)
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali';
+        showToast("Server database belum terhubung. Isi API_URL di gas-bridge.js terlebih dahulu.", "error");
       }
     }
 
     function handleLogout() {
       if (!confirm("Apakah Anda yakin ingin keluar dari panel admin?")) return;
       sessionStorage.removeItem('admin_session_auth');
+      sessionStorage.removeItem('admin_api_token');
       ADMIN_STATE.currentUser = null;
       showToast("Anda telah keluar dari sesi administrator.", "info");
       showLoginView();
