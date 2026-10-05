@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Panel Admin | Portal Agregator Desa Se-Provinsi Riau</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts: Plus Jakarta Sans, Outfit & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN with Custom Luxury Theme -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            riau: {
+              obsidian: '#020d09',
+              dark: '#051812',
+              card: 'rgba(8, 29, 22, 0.85)',
+              emerald: '#059669',
+              emeraldBright: '#10b981',
+              emeraldDeep: '#022c22',
+              gold: '#f59e0b',
+              goldLight: '#fde68a',
+              goldDark: '#b45309'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+            royal: ['"Cinzel"', 'serif']
+          },
+          boxShadow: {
+            'gold-glow': '0 0 25px -5px rgba(245, 158, 11, 0.35)',
+            'emerald-glow': '0 0 30px -5px rgba(16, 185, 129, 0.3)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.45)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP for Smooth Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    body {
+      background-color: #020d09;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 12% 15%, rgba(5, 150, 105, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 88% 85%, rgba(245, 158, 11, 0.09) 0%, transparent 55%);
+      background-attachment: fixed;
+    }
+
+    .glass-panel {
+      background: rgba(8, 29, 22, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .glass-card {
+      background: rgba(5, 24, 18, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(16, 185, 129, 0.18);
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .emerald-gradient-text {
+      background: linear-gradient(135deg, #a7f3d0 0%, #10b981 50%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #020d09; }
+    ::-webkit-scrollbar-thumb { background: #064e3b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #059669; }
+
+    /* Active Sidebar Nav Item */
+    .nav-item-active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(5, 150, 105, 0.25) 100%);
+      border-left: 4px solid #f59e0b;
+      color: #fbbf24 !important;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-riau-gold selection:text-black">
+
+  <!-- ========================================================================= -->
+  <!-- 1. AUTHENTICATION / LOGIN VIEW (TAMPIL HANYA JIKA BELUM LOGIN) -->
+  <!-- ========================================================================= -->
+  <div id="login-section" class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+    <div class="w-full max-w-md glass-panel rounded-3xl p-8 sm:p-10 shadow-2xl border border-riau-gold/30 space-y-6 relative overflow-hidden">
+      
+      <!-- Top Ambient Glow -->
+      <div class="absolute -top-16 -left-16 w-40 h-40 bg-riau-gold/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -right-16 w-40 h-40 bg-riau-emerald/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Brand Header -->
+      <div class="text-center space-y-3 relative z-10">
+        <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-riau-emeraldDeep via-riau-emerald to-riau-gold p-0.5 shadow-gold-glow flex items-center justify-center">
+          <div class="w-full h-full bg-riau-dark rounded-[22px] flex items-center justify-center text-riau-gold text-3xl">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+        </div>
+        <div>
+          <h1 class="font-royal text-2xl font-extrabold gold-gradient-text tracking-wide">PANEL ADMINISTRATOR</h1>
+          <p class="text-xs text-emerald-400/90 font-medium tracking-wider uppercase mt-1">Portal Agregator Desa Se-Provinsi Riau</p>
+        </div>
+      </div>
+
+      <!-- Security Callout -->
+      <div class="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 text-[11px] text-emerald-300 flex items-start gap-3">
+        <i class="fa-solid fa-lock text-riau-gold text-sm mt-0.5"></i>
+        <div class="leading-relaxed">
+          Autentikasi terenkripsi langsung terverifikasi dengan basis data Google Sheets tab <strong>Tbl_Admin</strong>.
+        </div>
+      </div>
+
+      <!-- Form Login -->
+      <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4 relative z-10">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Username Administrator</label>
+          <div class="relative">
+            <i class="fa-solid fa-user-gear absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+            <input 
+              type="text" 
+              id="input-username" 
+              required 
+              placeholder="Masukkan username..."
+              class="w-full pl-10 pr-4 py-3 rounded-xl bg-riau-obsidian/90 border border-white/10 text-sm text-white focus:border-riau-gold focus:outline-none transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1.5">Kata Sandi</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+            <input 
+              type="password" 
+              id="input-password" 
+              required 
+              placeholder="Masukkan kata sandi..."
+              class="w-full pl-10 pr-10 py-3 rounded-xl bg-riau-obsidian/90 border border-white/10 text-sm text-white focus:border-riau-gold focus:outline-none transition"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility()" 
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            >
+              <i class="fa-solid fa-eye" id="toggle-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          id="btn-login"
+          class="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-riau-obsidian shadow-gold-glow hover:brightness-110 active:scale-98 transition flex items-center justify-center gap-2 mt-2"
+        >
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali
+        </button>
+      </form>
+
+      <!-- Petunjuk Kredensial Terdaftar -->
+      <div class="text-[11px] text-gray-400 bg-riau-obsidian/70 p-3.5 rounded-2xl border border-white/5 space-y-1 relative z-10">
+        <div class="font-semibold text-amber-300 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i> Akun Pengelola Default Terdaftar:
+        </div>
+        <div class="flex items-center justify-between text-gray-300 pt-1 border-t border-white/5">
+          <span>Super Admin:</span>
+          <span class="font-mono text-white">admin_riau / RiauMaju2026!</span>
+        </div>
+        <div class="flex items-center justify-between text-gray-300">
+          <span>Verifikator:</span>
+          <span class="font-mono text-white">admin_desa / DesaRiau2026!</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN APPLICATION DASHBOARD (SIDEBAR + MAIN CONTENT AREA) -->
+  <!-- ========================================================================= -->
+  <div id="dashboard-section" class="hidden min-h-screen flex flex-col md:flex-row">
+    
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebarMobile()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden"></div>
+
+    <!-- ======================================================================= -->
+    <!-- SIDEBAR NAVIGATION (FIXED DESKTOP / DRAWER MOBILE) -->
+    <!-- ======================================================================= -->
+    <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-[#03130d] border-r border-riau-gold/20 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:h-screen">
+      
+      <!-- Brand Logo Header -->
+      <div class="p-6 border-b border-riau-gold/20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-riau-emerald to-riau-gold p-0.5 flex items-center justify-center shadow-gold-glow">
+            <div class="w-full h-full bg-riau-dark rounded-[10px] flex items-center justify-center text-riau-gold font-bold">
+              <i class="fa-solid fa-sailboat"></i>
+            </div>
+          </div>
+          <div>
+            <div class="font-royal text-sm font-bold text-white tracking-wider">
+              LANCANG KUNING
+            </div>
+            <div class="text-[10px] font-semibold text-riau-gold tracking-widest uppercase">
+              Admin Portal Desa
+            </div>
+          </div>
+        </div>
+
+        <button onclick="toggleSidebarMobile()" class="md:hidden text-gray-400 hover:text-white p-2">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Current User Info Card -->
+      <div class="p-4 mx-4 mt-4 rounded-2xl bg-riau-dark/80 border border-emerald-500/25 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white font-bold shadow">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <div id="user-display-name" class="text-xs font-bold text-white truncate">Administrator Riau</div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="user-display-role" class="text-[10px] text-amber-300 font-medium">Super Admin</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+        
+        <div class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          Ringkasan & Analisis
+        </div>
+
+        <button onclick="switchAdminTab('tab-dashboard')" id="btn-tab-dashboard" class="w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition">
+          <i class="fa-solid fa-chart-pie w-5 text-riau-gold text-sm"></i>
+          <span>Dashboard Utama</span>
+        </button>
+
+        <div class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          Publikasi & Konten
+        </div>
+
+        <button onclick="switchAdminTab('tab-kelola-warta')" id="btn-tab-kelola-warta" class="nav-item-active w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center justify-between transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-newspaper w-5 text-riau-gold text-sm"></i>
+            <span>Kelola Warta Desa</span>
+          </div>
+          <span id="badge-warta-count" class="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/30">0</span>
+        </button>
+
+        <button onclick="switchAdminTab('tab-upload-warta')" id="btn-tab-upload-warta" class="w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition">
+          <i class="fa-solid fa-cloud-arrow-up w-5 text-riau-gold text-sm"></i>
+          <span>Upload Warta Baru</span>
+        </button>
+
+        <div class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          Dokumentasi Kegiatan
+        </div>
+
+        <button onclick="switchAdminTab('tab-kelola-dok')" id="btn-tab-kelola-dok" class="w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center justify-between transition">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-images w-5 text-riau-gold text-sm"></i>
+            <span>Kelola Dokumentasi</span>
+          </div>
+          <span id="badge-dok-count" class="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/30">0</span>
+        </button>
+
+        <button onclick="switchAdminTab('tab-upload-dok')" id="btn-tab-upload-dok" class="w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition">
+          <i class="fa-solid fa-camera w-5 text-riau-gold text-sm"></i>
+          <span>Upload Dokumentasi</span>
+        </button>
+
+        <div class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          Sistem & Otorisasi
+        </div>
+
+        <button onclick="switchAdminTab('tab-daftar-admin')" id="btn-tab-daftar-admin" class="w-full px-3.5 py-3 rounded-xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition">
+          <i class="fa-solid fa-users-gear w-5 text-riau-gold text-sm"></i>
+          <span>Daftar Administrator</span>
+        </button>
+
+      </nav>
+
+      <!-- Sidebar Bottom: Logout -->
+      <div class="p-4 border-t border-riau-gold/15 bg-riau-obsidian/60 space-y-3">
+        <button onclick="handleLogout()" class="w-full py-2.5 px-4 rounded-xl bg-red-950/70 border border-red-500/30 text-red-200 hover:bg-red-900/90 text-xs font-semibold flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-power-off"></i> Keluar dari Sesi
+        </button>
+        <div class="text-[10px] text-center text-gray-400">
+          Portal Desa Se-Riau • v2.4 Enterprise
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================================= -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ======================================================================= -->
+    <div class="flex-grow flex flex-col min-w-0 md:h-screen md:overflow-y-auto">
+      
+      <!-- Topbar Header -->
+      <header class="sticky top-0 z-30 glass-panel border-b border-riau-gold/20 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSidebarMobile()" class="md:hidden p-2 rounded-xl text-riau-gold hover:bg-white/5">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          
+          <div>
+            <h2 id="topbar-title" class="font-royal text-base sm:text-lg font-bold text-white leading-tight">
+              Kelola Warta Desa
+            </h2>
+            <div id="topbar-breadcrumb" class="text-[11px] text-emerald-400 font-medium">
+              Administrasi / Publikasi & Moderasi Warta
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Live Clock & Quick Action -->
+        <div class="flex items-center gap-3">
+          
+          <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-riau-obsidian/70 border border-white/10 text-xs text-gray-300 font-mono">
+            <i class="fa-regular fa-clock text-riau-gold"></i>
+            <span id="live-clock">--:--:-- WIB</span>
+          </div>
+
+          <button onclick="switchAdminTab('tab-upload-warta')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-emerald-glow hover:brightness-110 active:scale-95 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span class="hidden sm:inline">Upload Warta Baru</span>
+          </button>
+
+          <button onclick="handleLogout()" title="Keluar" class="p-2 rounded-xl bg-white/5 hover:bg-red-950/60 border border-white/10 text-gray-300 hover:text-red-300 transition">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+
+        </div>
+
+      </header>
+
+      <!-- Main Scrollable Body Content -->
+      <main class="flex-grow p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto">
+        
+        <!-- =================================================================== -->
+        <!-- VIEW 1: DASHBOARD RINGKASAN & STATISTIK -->
+        <!-- =================================================================== -->
+        <div id="view-dashboard" class="hidden space-y-6">
+          
+          <!-- Welcome Banner -->
+          <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/90 via-riau-dark to-riau-obsidian border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+            <div class="space-y-2">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <i class="fa-solid fa-circle-check text-emerald-400"></i> Sistem Aktif & Terhubung
+              </div>
+              <h3 class="font-royal text-xl sm:text-2xl font-bold text-white">
+                Selamat Datang di Panel Kendali Portal Desa Riau
+              </h3>
+              <p class="text-xs text-gray-300 max-w-2xl leading-relaxed">
+                Kelola dan terbitkan kabar desa, galeri foto dokumentasi, dan pantau penyebaran informasi dari 1.850+ desa di 12 Kabupaten & Kota Se-Provinsi Riau.
+              </p>
+            </div>
+            
+            <div class="flex flex-wrap gap-2.5 w-full md:w-auto">
+              <button onclick="switchAdminTab('tab-upload-warta')" class="px-5 py-2.5 rounded-xl bg-riau-gold text-black font-bold text-xs shadow-gold-glow hover:brightness-110 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-pen-nib"></i> Tulis Warta
+              </button>
+              <button onclick="switchAdminTab('tab-upload-dok')" class="px-5 py-2.5 rounded-xl bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-bold text-xs hover:bg-emerald-900 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-camera"></i> Upload Foto
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistik Cards Grid -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div class="glass-panel p-5 rounded-2xl border border-emerald-500/30 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Warta Terbit</span>
+                <i class="fa-solid fa-newspaper text-emerald-400 text-lg"></i>
+              </div>
+              <div class="text-3xl font-extrabold font-display text-white" id="stat-berita-published">0</div>
+              <p class="text-[11px] text-gray-400">Ditampilkan di portal publik</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-2xl border border-amber-500/30 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-amber-300 uppercase tracking-wider">Menunggu Review</span>
+                <i class="fa-solid fa-hourglass-half text-amber-400 text-lg"></i>
+              </div>
+              <div class="text-3xl font-extrabold font-display text-amber-300" id="stat-berita-pending">0</div>
+              <p class="text-[11px] text-gray-400">Draft / Butuh persetujuan</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Dokumentasi Foto</span>
+                <i class="fa-solid fa-images text-riau-gold text-lg"></i>
+              </div>
+              <div class="text-3xl font-extrabold font-display text-white" id="stat-dok-total">0</div>
+              <p class="text-[11px] text-gray-400">Potret kegiatan desa terbit</p>
+            </div>
+
+            <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Admin Terdaftar</span>
+                <i class="fa-solid fa-users text-blue-400 text-lg"></i>
+              </div>
+              <div class="text-3xl font-extrabold font-display text-riau-gold" id="stat-admin-total">2</div>
+              <p class="text-[11px] text-gray-400">Pengelola di Tbl_Admin Sheets</p>
+            </div>
+
+          </div>
+
+          <!-- Quick Action Panels -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-4">
+              <h4 class="font-royal text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-compass text-riau-gold"></i>
+                Pedoman Verifikasi Redaksi
+              </h4>
+              <ul class="text-xs text-gray-300 space-y-2.5 leading-relaxed">
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                  <span>Pastikan nama desa, kecamatan, dan kabupaten/kota ditulis dengan akurat.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                  <span>Gunakan foto resolusi baik dan bebas hak cipta untuk thumbnail warta.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                  <span>Warta berstatus <strong>Published</strong> otomatis langsung tampil pada feed utama portal publik.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-4">
+              <h4 class="font-royal text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-database text-emerald-400"></i>
+                Status Integrasi Google Cloud
+              </h4>
+              <div class="space-y-2 text-xs">
+                <div class="p-3 rounded-xl bg-riau-obsidian/70 border border-white/5 flex items-center justify-between">
+                  <span class="text-gray-400">Database Google Sheets:</span>
+                  <span class="text-emerald-400 font-mono font-semibold">Tersambung (Tbl_Berita)</span>
+                </div>
+                <div class="p-3 rounded-xl bg-riau-obsidian/70 border border-white/5 flex items-center justify-between">
+                  <span class="text-gray-400">Google Drive Storage:</span>
+                  <span class="text-amber-300 font-mono font-semibold">Aktif (Public View)</span>
+                </div>
+                <div class="p-3 rounded-xl bg-riau-obsidian/70 border border-white/5 flex items-center justify-between">
+                  <span class="text-gray-400">Zona Waktu:</span>
+                  <span class="text-white font-mono font-semibold">Asia/Jakarta (WIB)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 2: KELOLA WARTA DESA (DENGAN FILTER URUTAN WAKTU & WILAYAH BERJENJANG) -->
+        <!-- =================================================================== -->
+        <div id="view-kelola-warta" class="space-y-5">
+          
+          <!-- FILTER ENGINE PANEL (LENGKAP: WAKTU, KABUPATEN, KECAMATAN, DESA, KATEGORI, STATUS, PENCARIAN) -->
+          <div class="glass-panel p-5 rounded-3xl border border-riau-gold/30 space-y-4">
+            
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-white/10 pb-3">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-riau-gold"></i>
+                <span class="font-royal text-sm font-bold text-white">Filter & Penyaringan Warta Desa</span>
+              </div>
+              <button onclick="resetWartaFilters()" class="text-xs text-amber-300 hover:text-white transition flex items-center gap-1.5 font-medium">
+                <i class="fa-solid fa-rotate-left"></i> Reset Filter
+              </button>
+            </div>
+
+            <!-- Baris 1: Filter Urutan Waktu & Wilayah (Kabupaten, Kecamatan, Desa) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              
+              <!-- Filter 1: Urutan Waktu (Pertama / Terbaru) -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-arrow-down-short-wide text-riau-gold mr-1"></i> Urutan Waktu
+                </label>
+                <select id="filter-sort-order" onchange="applyWartaFilters()" class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none">
+                  <option value="newest">Warta Terbaru (Terbaru &rarr; Pertama)</option>
+                  <option value="oldest">Warta Pertama (Pertama &rarr; Terbaru)</option>
+                </select>
+              </div>
+
+              <!-- Filter 2: Kabupaten / Kota -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-map-location-dot text-emerald-400 mr-1"></i> Kabupaten / Kota
+                </label>
+                <select id="filter-kabupaten" onchange="onFilterKabupatenChange()" class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none cursor-pointer">
+                  <option value="Semua">Semua Kabupaten / Kota</option>
+                  <option value="Bengkalis">Bengkalis</option>
+                  <option value="Indragiri Hilir">Indragiri Hilir</option>
+                  <option value="Indragiri Hulu">Indragiri Hulu</option>
+                  <option value="Kampar">Kampar</option>
+                  <option value="Kepulauan Meranti">Kepulauan Meranti</option>
+                  <option value="Kuantan Singingi">Kuantan Singingi</option>
+                  <option value="Pelalawan">Pelalawan</option>
+                  <option value="Rokan Hilir">Rokan Hilir</option>
+                  <option value="Rokan Hulu">Rokan Hulu</option>
+                  <option value="Siak">Siak</option>
+                  <option value="Kota Dumai">Kota Dumai</option>
+                  <option value="Kota Pekanbaru">Kota Pekanbaru</option>
+                </select>
+              </div>
+
+              <!-- Filter 3: Kecamatan (Dinamis via API) -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-building text-amber-300 mr-1"></i> Kecamatan
+                </label>
+                <select 
+                  id="filter-kecamatan" 
+                  onchange="onFilterKecamatanChange()" 
+                  class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none cursor-pointer"
+                >
+                  <option value="">Semua Kecamatan</option>
+                </select>
+              </div>
+
+              <!-- Filter 4: Desa (Dinamis via API) -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-house-chimney text-teal-400 mr-1"></i> Nama Desa
+                </label>
+                <select 
+                  id="filter-desa" 
+                  onchange="applyWartaFilters()" 
+                  class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none cursor-pointer"
+                >
+                  <option value="">Semua Desa</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Baris 2: Filter Kategori, Status & Search Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              
+              <!-- Filter Kategori -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-tags text-riau-gold mr-1"></i> Kategori Warta
+                </label>
+                <select id="filter-kategori" onchange="applyWartaFilters()" class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none">
+                  <option value="Semua">Semua Kategori</option>
+                  <option value="Pemberdayaan Ekonomi">Pemberdayaan Ekonomi</option>
+                  <option value="Pariwisata & Budaya">Pariwisata & Budaya</option>
+                  <option value="Infrastruktur & Digital">Infrastruktur & Digital</option>
+                  <option value="Pertanian & Perkebunan">Pertanian & Perkebunan</option>
+                  <option value="Sosial & Tradisi">Sosial & Tradisi</option>
+                  <option value="Kesehatan & Lingkungan">Kesehatan & Lingkungan</option>
+                </select>
+              </div>
+
+              <!-- Filter Status Tab Pills -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-traffic-light text-emerald-400 mr-1"></i> Status Publikasi
+                </label>
+                <select id="filter-status" onchange="applyWartaFilters()" class="w-full px-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none">
+                  <option value="All">Semua Status</option>
+                  <option value="Published">Tayang di Web (Published)</option>
+                  <option value="Pending">Menunggu Review (Pending / Draft)</option>
+                  <option value="Rejected">Ditolak (Rejected)</option>
+                </select>
+              </div>
+
+              <!-- Live Keyword Search -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                  <i class="fa-solid fa-magnifying-glass text-riau-gold mr-1"></i> Pencarian Kata Kunci
+                </label>
+                <div class="relative">
+                  <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                  <input 
+                    type="text" 
+                    id="filter-search-input" 
+                    oninput="applyWartaFilters()"
+                    placeholder="Cari judul atau isi warta..."
+                    class="w-full pl-9 pr-3 py-2 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white placeholder-gray-500 focus:border-riau-gold focus:outline-none"
+                  >
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Filter Status Counters Bar -->
+            <div class="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-white/5">
+              <div>
+                Menampilkan <strong id="filter-result-count" class="text-amber-300 font-mono">0</strong> warta desa
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Siap Dipublikasikan</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TABEL DATA WARTA DESA -->
+          <div class="glass-panel rounded-3xl overflow-hidden border border-riau-gold/20 shadow-2xl">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-gray-300">
+                <thead class="bg-emerald-950/90 text-amber-200 font-bold border-b border-white/10 uppercase tracking-wider">
+                  <tr>
+                    <th class="p-4">Foto</th>
+                    <th class="p-4">Judul Warta & Lokasi</th>
+                    <th class="p-4">Kategori</th>
+                    <th class="p-4">Penulis / Sumber</th>
+                    <th class="p-4">Tanggal</th>
+                    <th class="p-4">Status</th>
+                    <th class="p-4 text-center">Tindakan</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-posts-tbody" class="divide-y divide-white/5">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div id="admin-posts-empty" class="hidden p-12 text-center text-gray-400 text-xs space-y-2">
+              <i class="fa-solid fa-folder-open text-3xl text-gray-600 block"></i>
+              <div>Tidak ditemukan warta yang cocok dengan parameter filter saat ini.</div>
+              <button onclick="resetWartaFilters()" class="text-amber-300 hover:underline text-xs mt-1">
+                Bersihkan filter pencarian
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 3: UPLOAD WARTA BARU (FORM PUBLIKASI WARTA RESMI) -->
+        <!-- =================================================================== -->
+        <div id="view-upload-warta" class="hidden">
+          <div class="max-w-4xl mx-auto glass-panel p-6 sm:p-8 rounded-3xl border border-riau-gold/30 space-y-6 shadow-2xl">
+            
+            <div class="border-b border-white/10 pb-4">
+              <h3 class="font-royal text-xl font-bold text-white flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-riau-gold/20 text-riau-gold flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                Publikasi Warta Desa Baru
+              </h3>
+              <p class="text-xs text-gray-400 mt-1">
+                Lengkapi formulir di bawah ini untuk menerbitkan berita pembangunan, inovasi desa, atau kegiatan kemasyarakatan.
+              </p>
+            </div>
+
+            <form onsubmit="handleAdminCreateArticle(event)" class="space-y-5">
+              
+              <!-- Judul Warta -->
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Judul Warta Berita *</label>
+                <input 
+                  type="text" 
+                  id="form-create-judul" 
+                  required 
+                  placeholder="Contoh: Panen Raya Sagu dan Pelatihan Hilirisasi Olahan UMKM Desa..." 
+                  class="w-full px-4 py-3 rounded-xl bg-riau-obsidian border border-white/15 text-sm text-white focus:border-riau-gold focus:outline-none transition"
+                >
+              </div>
+
+              <!-- Baris Wilayah Berjenjang via API: Kabupaten -> Kecamatan -> Desa & Kategori -->
+              <div class="p-4 rounded-2xl bg-riau-obsidian/70 border border-riau-gold/30 space-y-3">
+                <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+                  <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-map-location-dot text-emerald-400"></i>
+                    Wilayah Liputan Warta Desa (Integrasi API Resmi) *
+                  </span>
+                  <span id="warta-wilayah-status" class="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
+                    <i class="fa-solid fa-bolt text-riau-gold"></i> Live API Wilayah
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-map-pin text-riau-gold mr-1"></i> 1. Kabupaten / Kota *
+                    </label>
+                    <select 
+                      id="form-create-kabupaten" 
+                      required 
+                      onchange="onWartaKabupatenChange()"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kabupaten...</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-building text-amber-300 mr-1"></i> 2. Kecamatan *
+                    </label>
+                    <select 
+                      id="form-create-kecamatan" 
+                      required 
+                      disabled
+                      onchange="onWartaKecamatanChange()"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kabupaten dulu</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-house-chimney text-teal-400 mr-1"></i> 3. Desa / Kelurahan *
+                    </label>
+                    <select 
+                      id="form-create-desa" 
+                      required 
+                      disabled
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kecamatan dulu</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-tags text-riau-gold mr-1"></i> 4. Kategori Berita *
+                    </label>
+                    <select id="form-create-kategori" required class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none cursor-pointer">
+                    <option value="Pemberdayaan Ekonomi">Pemberdayaan Ekonomi</option>
+                    <option value="Pariwisata & Budaya">Pariwisata & Budaya</option>
+                    <option value="Infrastruktur & Digital">Infrastruktur & Digital</option>
+                    <option value="Pertanian & Perkebunan">Pertanian & Perkebunan</option>
+                    <option value="Sosial & Tradisi">Sosial & Tradisi</option>
+                    <option value="Kesehatan & Lingkungan">Kesehatan & Lingkungan</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- Baris Penulis, Tanggal, & Status Awal -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                
+                <div>
+                  <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Penulis / Narahubung</label>
+                  <input 
+                    type="text" 
+                    id="form-create-penulis" 
+                    placeholder="Contoh: Humas Desa / Budi Santoso" 
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Tanggal Terbit</label>
+                  <input 
+                    type="date" 
+                    id="form-create-tanggal" 
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Status Publikasi *</label>
+                  <select id="form-create-status" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-riau-gold focus:outline-none">
+                    <option value="Published">Langsung Terbit (Published)</option>
+                    <option value="Pending">Simpan Sebagai Draf (Pending)</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <!-- Isi Berita Lengkap -->
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Isi Narasi Berita Lengkap *</label>
+                <textarea 
+                  id="form-create-konten" 
+                  rows="7" 
+                  required 
+                  placeholder="Tuliskan isi berita secara lengkap di sini. Anda dapat memisahkan paragraf dengan baris baru..." 
+                  class="w-full px-4 py-3 rounded-xl bg-riau-obsidian border border-white/15 text-sm text-white focus:border-riau-gold focus:outline-none resize-y leading-relaxed"
+                ></textarea>
+              </div>
+
+              <!-- Upload Foto Sampul / Cover -->
+              <div class="space-y-3">
+                <label class="block text-xs font-semibold text-gray-300 uppercase">Foto Sampul Utama (Cover Image)</label>
+                
+                <div class="p-5 rounded-2xl border-2 border-dashed border-white/15 bg-riau-obsidian/60 hover:border-riau-gold/50 transition text-center space-y-3">
+                  <div class="w-12 h-12 rounded-xl bg-riau-emerald/20 text-riau-emeraldBright mx-auto flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                  </div>
+                  <div class="text-xs text-gray-300">
+                    <label class="cursor-pointer text-riau-gold font-semibold hover:underline">
+                      Pilih file foto dari perangkat
+                      <input type="file" id="form-create-file" accept="image/*" onchange="previewCreateWartaImage(event)" class="hidden">
+                    </label>
+                    <span class="text-gray-500"> atau seret gambar ke sini</span>
+                  </div>
+                  <div class="text-[10px] text-gray-500">Format JPG, PNG, WEBP (Maksimal 5MB). Otomatis tersimpan ke Google Drive.</div>
+                </div>
+
+                <!-- Preview Box -->
+                <div id="create-warta-preview-box" class="hidden p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <img id="create-warta-preview-img" src="" class="w-20 h-16 object-cover rounded-xl border border-white/10">
+                  <div class="flex-grow min-w-0 text-xs">
+                    <div id="create-warta-preview-name" class="font-bold text-white truncate">foto.jpg</div>
+                    <div class="text-[10px] text-emerald-400 mt-0.5"><i class="fa-solid fa-check"></i> Foto siap diunggah</div>
+                  </div>
+                  <button type="button" onclick="cancelCreateWartaImage()" class="px-3 py-1 rounded-lg bg-red-950/80 text-red-200 text-xs hover:bg-red-900 transition">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Submit Buttons -->
+              <div class="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+                <button type="button" onclick="switchAdminTab('tab-kelola-warta')" class="px-5 py-2.5 rounded-xl border border-white/10 bg-riau-obsidian text-gray-300 hover:text-white text-xs font-semibold transition">
+                  Kembali ke Daftar
+                </button>
+                <button 
+                  type="submit" 
+                  id="btn-submit-create-warta"
+                  class="px-7 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-black font-bold text-xs uppercase tracking-wider shadow-gold-glow hover:brightness-110 active:scale-95 transition flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-paper-plane"></i> Publikasikan Warta Sekarang
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 4: KELOLA DOKUMENTASI (GALERI FOTO KEGIATAN DESA) -->
+        <!-- =================================================================== -->
+        <div id="view-kelola-dok" class="hidden space-y-5">
+          
+          <div class="glass-panel p-5 rounded-3xl border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 class="font-royal text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-images text-emerald-400"></i>
+                Kelola Dokumentasi Foto Kegiatan
+              </h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Galeri potret kegiatan gotong royong, adat Melayu, posyandu, dan infrastruktur desa se-Riau.
+              </p>
+            </div>
+
+            <button onclick="switchAdminTab('tab-upload-dok')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-emerald-glow hover:brightness-110 transition flex items-center gap-2">
+              <i class="fa-solid fa-camera"></i> Upload Foto Baru
+            </button>
+          </div>
+
+          <!-- Grid Dokumentasi -->
+          <div id="admin-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Injected via JavaScript -->
+          </div>
+
+          <div id="admin-gallery-empty" class="hidden glass-panel p-12 rounded-3xl text-center text-gray-400 text-xs">
+            Belum ada dokumentasi kegiatan yang tersimpan.
+          </div>
+
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 5: UPLOAD DOKUMENTASI BARU -->
+        <!-- =================================================================== -->
+        <div id="view-upload-dok" class="hidden">
+          <div class="max-w-2xl mx-auto glass-panel p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6 shadow-2xl">
+            
+            <div class="border-b border-white/10 pb-4">
+              <h3 class="font-royal text-xl font-bold text-white flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-camera"></i>
+                </div>
+                Upload Dokumentasi Foto Baru
+              </h3>
+              <p class="text-xs text-gray-400 mt-1">
+                Unggah potret kegiatan desa ke galeri visual portal publik se-Provinsi Riau.
+              </p>
+            </div>
+
+            <form onsubmit="handleAdminCreateDok(event)" class="space-y-4">
+              
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Judul Kegiatan *</label>
+                <input 
+                  type="text" 
+                  id="form-dok-judul" 
+                  required 
+                  placeholder="Contoh: Gotong Royong Pembukaan Jalan Tani Dusun Melati" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-sm text-white focus:border-emerald-500 focus:outline-none"
+                >
+              </div>
+
+              <!-- Pemilihan Lokasi Berjenjang via API (Kabupaten -> Kecamatan -> Desa) -->
+              <div class="p-4 rounded-2xl bg-riau-obsidian/70 border border-emerald-500/25 space-y-3">
+                <div class="flex items-center justify-between text-xs border-b border-white/10 pb-2">
+                  <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-map-location-dot text-riau-gold"></i>
+                    Lokasi Dokumentasi Kegiatan Desa (Integrasi API Resmi) *
+                  </span>
+                  <span id="dok-wilayah-status" class="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
+                    <i class="fa-solid fa-bolt text-riau-gold"></i> Live API Wilayah
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-map-pin text-emerald-400 mr-1"></i> 1. Kabupaten / Kota *
+                    </label>
+                    <select 
+                      id="form-dok-kabupaten" 
+                      required 
+                      onchange="onDokKabupatenChange()"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-emerald-500 focus:outline-none cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kabupaten...</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-building text-amber-300 mr-1"></i> 2. Kecamatan *
+                    </label>
+                    <select 
+                      id="form-dok-kecamatan" 
+                      required 
+                      disabled
+                      onchange="onDokKecamatanChange()"
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-emerald-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kabupaten dulu</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">
+                      <i class="fa-solid fa-house-chimney text-teal-400 mr-1"></i> 3. Desa / Kelurahan *
+                    </label>
+                    <select 
+                      id="form-dok-desa" 
+                      required 
+                      disabled
+                      class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-emerald-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      <option value="" disabled selected>Pilih Kecamatan dulu</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Tanggal Kegiatan</label>
+                <input 
+                  type="date" 
+                  id="form-dok-tanggal" 
+                  class="w-full px-4 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-emerald-500 focus:outline-none"
+                >
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">Keterangan / Deskripsi Singkat</label>
+                <textarea 
+                  id="form-dok-deskripsi" 
+                  rows="3" 
+                  placeholder="Ceritakan momen penting yang tertangkap dalam foto ini..." 
+                  class="w-full px-4 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-xs text-white focus:border-emerald-500 focus:outline-none resize-none leading-relaxed"
+                ></textarea>
+              </div>
+
+              <!-- Upload File Foto -->
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-1.5">File Foto Dokumentasi *</label>
+                <div class="p-5 rounded-2xl border-2 border-dashed border-white/15 bg-riau-obsidian/60 text-center space-y-2">
+                  <i class="fa-solid fa-image text-emerald-400 text-2xl"></i>
+                  <div class="text-xs">
+                    <label class="cursor-pointer text-emerald-400 font-semibold hover:underline">
+                      Pilih foto kegiatan
+                      <input type="file" id="form-dok-file" required accept="image/*" onchange="previewDokImage(event)" class="hidden">
+                    </label>
+                  </div>
+                  <div class="text-[10px] text-gray-500">Maks. 5MB. Otomatis terunggah ke Google Drive.</div>
+                </div>
+
+                <div id="dok-preview-box" class="hidden mt-3 p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <img id="dok-preview-img" src="" class="w-20 h-16 object-cover rounded-xl border border-white/10">
+                  <div class="flex-grow min-w-0 text-xs">
+                    <div id="dok-preview-name" class="font-bold text-white truncate">foto.jpg</div>
+                    <div class="text-[10px] text-emerald-400 mt-0.5"><i class="fa-solid fa-check"></i> Siap disimpan</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div class="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+                <button type="button" onclick="switchAdminTab('tab-kelola-dok')" class="px-5 py-2.5 rounded-xl border border-white/10 bg-riau-obsidian text-gray-300 hover:text-white text-xs font-semibold transition">
+                  Batal
+                </button>
+                <button 
+                  type="submit" 
+                  id="btn-submit-dok"
+                  class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs uppercase tracking-wider shadow-emerald-glow hover:brightness-110 transition flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Galeri Publik
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- VIEW 6: DAFTAR AKUN ADMINISTRATOR -->
+        <!-- =================================================================== -->
+        <div id="view-daftar-admin" class="hidden space-y-5">
+          
+          <div class="glass-panel p-5 rounded-3xl border border-riau-gold/30 flex items-center justify-between">
+            <div>
+              <h3 class="font-royal text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-users-shield text-riau-gold"></i>
+                Daftar Administrator Resmi
+              </h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Akun administrator dengan hak akses kelola portal desa, tersimpan aman di Google Sheets tab <strong>Tbl_Admin</strong>.
+              </p>
+            </div>
+            <div class="text-xs text-emerald-400 font-mono bg-emerald-950/80 px-3 py-1.5 rounded-xl border border-emerald-500/30">
+              <i class="fa-solid fa-database mr-1"></i> Tab: Tbl_Admin
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-gray-300">
+                <thead class="bg-emerald-950/90 text-amber-200 font-bold border-b border-white/10 uppercase tracking-wider">
+                  <tr>
+                    <th class="p-4">ID</th>
+                    <th class="p-4">Username</th>
+                    <th class="p-4">Nama Lengkap</th>
+                    <th class="p-4">Peran (Role)</th>
+                    <th class="p-4">Email</th>
+                    <th class="p-4">Status Akun</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-tbody" class="divide-y divide-white/5">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL EDIT WARTA (SUNting DATA BERITA) -->
+  <!-- ========================================================================= -->
+  <div id="modal-edit-post" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md p-4 flex items-center justify-center overflow-y-auto">
+    <div class="w-full max-w-2xl glass-panel rounded-3xl border border-riau-gold/40 p-6 sm:p-8 space-y-5 my-8 shadow-2xl">
+      
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h4 class="font-royal text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-riau-gold"></i>
+          Sunting Warta Desa
+        </h4>
+        <button onclick="closeEditModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleEditSubmit(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="edit-post-id">
+
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Judul Berita *</label>
+          <input type="text" id="edit-post-judul" required class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold text-gray-300 mb-1">Kabupaten / Kota *</label>
+            <select id="edit-post-kabupaten" onchange="onEditPostKabupatenChange()" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none cursor-pointer">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-gray-300 mb-1">Kecamatan *</label>
+            <select id="edit-post-kecamatan" onchange="onEditPostKecamatanChange()" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none cursor-pointer">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-gray-300 mb-1">Desa / Kelurahan *</label>
+            <select id="edit-post-desa" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none cursor-pointer">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-gray-300 mb-1">Kategori *</label>
+            <select id="edit-post-kategori" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none">
+              <option value="Pemberdayaan Ekonomi">Pemberdayaan Ekonomi</option>
+              <option value="Pariwisata & Budaya">Pariwisata & Budaya</option>
+              <option value="Infrastruktur & Digital">Infrastruktur & Digital</option>
+              <option value="Pertanian & Perkebunan">Pertanian & Perkebunan</option>
+              <option value="Sosial & Tradisi">Sosial & Tradisi</option>
+              <option value="Kesehatan & Lingkungan">Kesehatan & Lingkungan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-gray-300 mb-1">Status Publikasi *</label>
+            <select id="edit-post-status" class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none">
+              <option value="Published">Published (Tayang di Web)</option>
+              <option value="Pending">Pending (Draft / Review)</option>
+              <option value="Rejected">Rejected (Ditolak)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-300 mb-1">Isi Berita *</label>
+          <textarea id="edit-post-konten" rows="6" required class="w-full px-3.5 py-2.5 rounded-xl bg-riau-obsidian border border-white/15 text-white focus:border-riau-gold focus:outline-none resize-none leading-relaxed"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-white/5 text-gray-300 hover:text-white transition">
+            Batal
+          </button>
+          <button type="submit" id="btn-submit-edit" class="px-5 py-2 rounded-xl bg-riau-gold text-black font-bold shadow-gold-glow hover:brightness-110 transition">
+            Simpan Perubahan
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT CONTROLLER (AUTHENTICATION, REAL-TIME FILTERING & DATA ENGINE) -->
+  <!-- ========================================================================= -->
+  <script>
+    /**
+     * STATE MANAGEMENT
+     */
+    const ADMIN_STATE = {
+      isGAS: typeof google !== 'undefined' && typeof google.script !== 'undefined',
+      currentUser: null,
+      posts: [],
+      filteredPosts: [],
+      gallery: [],
+      admins: [],
+      currentTab: 'tab-kelola-warta',
+      filters: {
+        sortOrder: 'newest',
+        kabupaten: 'Semua',
+        kecamatan: '',
+        desa: '',
+        kategori: 'Semua',
+        status: 'All',
+        search: ''
+      }
+    };
+
+    /**
+     * =========================================================================
+     * WILAYAH INDONESIA API SERVICE (RIAU - PROVINSI ID 14)
+     * Sumber data resmi: https://www.emsifa.com/api-wilayah-indonesia/api/
+     * Mendukung pemuatan dinamis Kabupaten -> Kecamatan -> Desa dengan caching & offline fallback.
+     * =========================================================================
+     */
+    const WILAYAH_SERVICE = {
+      baseUrl: 'https://www.emsifa.com/api-wilayah-indonesia/api',
+      riauProvinceId: '14',
+
+      regenciesCache: null,
+      districtsCache: {},
+      villagesCache: {},
+
+      // 12 Kabupaten / Kota di Riau beserta ID resmi BPS / Kemendagri
+      riauRegencies: [
+        { id: '1401', name: 'Kuantan Singingi' },
+        { id: '1402', name: 'Indragiri Hulu' },
+        { id: '1403', name: 'Indragiri Hilir' },
+        { id: '1404', name: 'Pelalawan' },
+        { id: '1405', name: 'Siak' },
+        { id: '1406', name: 'Kampar' },
+        { id: '1407', name: 'Rokan Hulu' },
+        { id: '1408', name: 'Bengkalis' },
+        { id: '1409', name: 'Rokan Hilir' },
+        { id: '1410', name: 'Kepulauan Meranti' },
+        { id: '1471', name: 'Kota Pekanbaru' },
+        { id: '1472', name: 'Kota Dumai' }
+      ],
+
+      toTitleCase(str) {
+        if (!str) return '';
+        return str.toLowerCase().replace(/(?:^|\s|\/|\-)\S/g, a => a.toUpperCase());
+      },
+
+      cleanRegencyName(rawName) {
+        if (!rawName) return '';
+        return this.toTitleCase(rawName.replace(/^KABUPATEN\s+/i, '').replace(/^KOTA\s+/i, 'Kota '));
+      },
+
+      async getRegencies() {
+        if (this.regenciesCache) return this.regenciesCache;
+        try {
+          const res = await fetch(`${this.baseUrl}/regencies/${this.riauProvinceId}.json`);
+          if (!res.ok) throw new Error("Gagal mengambil data regencies API");
+          const data = await res.json();
+          this.regenciesCache = data.map(item => ({
+            id: item.id,
+            name: this.cleanRegencyName(item.name),
+            rawName: item.name
+          }));
+          return this.regenciesCache;
+        } catch (err) {
+          console.warn("Wilayah API Regencies offline, fallback to standard Riau regencies:", err);
+          this.regenciesCache = this.riauRegencies;
+          return this.riauRegencies;
+        }
+      },
+
+      async getDistricts(regencyIdOrName) {
+        if (!regencyIdOrName) return [];
+        let regId = regencyIdOrName;
+        if (!/^\d+$/.test(regencyIdOrName)) {
+          const match = this.riauRegencies.find(r => 
+            r.name.toLowerCase() === regencyIdOrName.toLowerCase() ||
+            regencyIdOrName.toLowerCase().includes(r.name.toLowerCase()) ||
+            r.name.toLowerCase().includes(regencyIdOrName.toLowerCase())
+          );
+          if (match) regId = match.id;
+        }
+
+        if (this.districtsCache[regId]) return this.districtsCache[regId];
+
+        try {
+          const res = await fetch(`${this.baseUrl}/districts/${regId}.json`);
+          if (!res.ok) throw new Error(`Gagal fetch kecamatan ID ${regId}`);
+          const data = await res.json();
+          const formatted = data.map(d => ({
+            id: d.id,
+            regency_id: d.regency_id,
+            name: this.toTitleCase(d.name)
+          }));
+          this.districtsCache[regId] = formatted;
+          return formatted;
+        } catch (err) {
+          console.warn(`District fetch error for ${regId}, using fallback:`, err);
+          return this.getFallbackDistricts(regId);
+        }
+      },
+
+      async getVillages(districtId) {
+        if (!districtId) return [];
+        if (this.villagesCache[districtId]) return this.villagesCache[districtId];
+
+        try {
+          const res = await fetch(`${this.baseUrl}/villages/${districtId}.json`);
+          if (!res.ok) throw new Error(`Gagal fetch desa ID ${districtId}`);
+          const data = await res.json();
+          const formatted = data.map(v => ({
+            id: v.id,
+            district_id: v.district_id,
+            name: this.toTitleCase(v.name)
+          }));
+          this.villagesCache[districtId] = formatted;
+          return formatted;
+        } catch (err) {
+          console.warn(`Village fetch error for ${districtId}, using fallback:`, err);
+          return this.getFallbackVillages(districtId);
+        }
+      },
+
+      getFallbackDistricts(regId) {
+        const fallbackMap = {
+          '1406': [ // Kampar
+            { id: '1406010', name: 'Kampar Kiri' },
+            { id: '1406020', name: 'Kampar' },
+            { id: '1406030', name: 'Tambang' },
+            { id: '1406040', name: 'XIII Koto Kampar' },
+            { id: '1406050', name: 'Kuok' },
+            { id: '1406060', name: 'Siak Hulu' },
+            { id: '1406070', name: 'Tapung' },
+            { id: '1406080', name: 'Tapung Hilir' },
+            { id: '1406090', name: 'Tapung Hulu' },
+            { id: '1406100', name: 'Salo' },
+            { id: '1406110', name: 'Rumbio Jaya' },
+            { id: '1406120', name: 'Bangkinang Kota' }
+          ],
+          '1405': [ // Siak
+            { id: '1405010', name: 'Siak' },
+            { id: '1405020', name: 'Sungai Apit' },
+            { id: '1405030', name: 'Minas' },
+            { id: '1405040', name: 'Tualang' },
+            { id: '1405050', name: 'Sungai Mandau' },
+            { id: '1405060', name: 'Dayun' },
+            { id: '1405070', name: 'Kerinci Kanan' },
+            { id: '1405080', name: 'Bungaraya' },
+            { id: '1405090', name: 'Koto Gasib' },
+            { id: '1405100', name: 'Kandis' },
+            { id: '1405110', name: 'Lubuk Dalam' },
+            { id: '1405120', name: 'Sabak Auh' },
+            { id: '1405130', name: 'Mempura' },
+            { id: '1405140', name: 'Pusako' }
+          ],
+          '1408': [ // Bengkalis
+            { id: '1408010', name: 'Bengkalis' },
+            { id: '1408020', name: 'Bantan' },
+            { id: '1408030', name: 'Bukit Batu' },
+            { id: '1408040', name: 'Mandau' },
+            { id: '1408050', name: 'Rupat' },
+            { id: '1408060', name: 'Rupat Utara' },
+            { id: '1408070', name: 'Siak Kecil' },
+            { id: '1408080', name: 'Pinggir' }
+          ]
+        };
+        return fallbackMap[regId] || [
+          { id: regId + '01', name: 'Kecamatan Sentral' },
+          { id: regId + '02', name: 'Kecamatan Pesisir' },
+          { id: regId + '03', name: 'Kecamatan Hulu' }
+        ];
+      },
+
+      getFallbackVillages(distId) {
+        return [
+          { id: distId + '001', name: 'Desa Muara Takus' },
+          { id: distId + '002', name: 'Desa Tanjung Belit' },
+          { id: distId + '003', name: 'Desa Batu Bersurat' },
+          { id: distId + '004', name: 'Desa Koto Mesjid' },
+          { id: distId + '005', name: 'Desa Sukamaju' },
+          { id: distId + '006', name: 'Kelurahan Pasar' }
+        ];
+      }
+    };
+
+    /**
+     * INISIALISASI DROPDOWN WILAYAH (KABUPATEN) DI SEMUA FORM & FILTER
+     */
+    async function initAllWilayahDropdowns() {
+      const regencies = await WILAYAH_SERVICE.getRegencies();
+
+      // 1. Form Upload Warta
+      const wartaKab = document.getElementById('form-create-kabupaten');
+      if (wartaKab) {
+        wartaKab.innerHTML = '<option value="" disabled selected>Pilih Kabupaten / Kota...</option>' +
+          regencies.map(r => `<option value="${r.name}" data-id="${r.id}">${r.name}</option>`).join('');
+      }
+
+      // 2. Form Upload Dokumentasi
+      const dokKab = document.getElementById('form-dok-kabupaten');
+      if (dokKab) {
+        dokKab.innerHTML = '<option value="" disabled selected>Pilih Kabupaten / Kota...</option>' +
+          regencies.map(r => `<option value="${r.name}" data-id="${r.id}">${r.name}</option>`).join('');
+      }
+
+      // 3. Filter Warta
+      const filterKab = document.getElementById('filter-kabupaten');
+      if (filterKab) {
+        filterKab.innerHTML = '<option value="Semua">Semua Kabupaten / Kota</option>' +
+          regencies.map(r => `<option value="${r.name}" data-id="${r.id}">${r.name}</option>`).join('');
+      }
+
+      // 4. Modal Edit Warta
+      const editKab = document.getElementById('edit-post-kabupaten');
+      if (editKab) {
+        editKab.innerHTML = '<option value="" disabled selected>Pilih Kabupaten...</option>' +
+          regencies.map(r => `<option value="${r.name}" data-id="${r.id}">${r.name}</option>`).join('');
+      }
+    }
+
+    /**
+     * EVENT HANDLER WILAYAH BERJENJANG: FORM UPLOAD WARTA
+     */
+    async function onWartaKabupatenChange() {
+      const selectKab = document.getElementById('form-create-kabupaten');
+      const selectKec = document.getElementById('form-create-kecamatan');
+      const selectDes = document.getElementById('form-create-desa');
+      const statusEl = document.getElementById('warta-wilayah-status');
+
+      const selectedOpt = selectKab.options[selectKab.selectedIndex];
+      const regId = selectedOpt?.getAttribute('data-id') || selectKab.value;
+
+      if (!regId) return;
+
+      if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-riau-gold"></i> Memuat kecamatan...';
+      selectKec.disabled = true;
+      selectKec.innerHTML = '<option value="" disabled selected>Memuat kecamatan...</option>';
+      selectDes.disabled = true;
+      selectDes.innerHTML = '<option value="" disabled selected>Pilih Kecamatan dulu</option>';
+
+      const districts = await WILAYAH_SERVICE.getDistricts(regId);
+      selectKec.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>' +
+        districts.map(d => `<option value="${d.name}" data-id="${d.id}">${d.name}</option>`).join('');
+      selectKec.disabled = false;
+
+      if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${districts.length} Kecamatan ditemukan`;
+    }
+
+    async function onWartaKecamatanChange() {
+      const selectKec = document.getElementById('form-create-kecamatan');
+      const selectDes = document.getElementById('form-create-desa');
+      const statusEl = document.getElementById('warta-wilayah-status');
+
+      const selectedOpt = selectKec.options[selectKec.selectedIndex];
+      const distId = selectedOpt?.getAttribute('data-id');
+
+      if (!distId) return;
+
+      if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-riau-gold"></i> Memuat desa...';
+      selectDes.disabled = true;
+      selectDes.innerHTML = '<option value="" disabled selected>Memuat desa...</option>';
+
+      const villages = await WILAYAH_SERVICE.getVillages(distId);
+      selectDes.innerHTML = '<option value="" disabled selected>Pilih Desa / Kelurahan...</option>' +
+        villages.map(v => `<option value="${v.name}">${v.name}</option>`).join('');
+      selectDes.disabled = false;
+
+      if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${villages.length} Desa/Kelurahan siap dipilih`;
+    }
+
+    /**
+     * EVENT HANDLER WILAYAH BERJENJANG: FORM UPLOAD DOKUMENTASI
+     */
+    async function onDokKabupatenChange() {
+      const selectKab = document.getElementById('form-dok-kabupaten');
+      const selectKec = document.getElementById('form-dok-kecamatan');
+      const selectDes = document.getElementById('form-dok-desa');
+      const statusEl = document.getElementById('dok-wilayah-status');
+
+      const selectedOpt = selectKab.options[selectKab.selectedIndex];
+      const regId = selectedOpt?.getAttribute('data-id') || selectKab.value;
+
+      if (!regId) return;
+
+      if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-riau-gold"></i> Memuat kecamatan...';
+      selectKec.disabled = true;
+      selectKec.innerHTML = '<option value="" disabled selected>Memuat kecamatan...</option>';
+      selectDes.disabled = true;
+      selectDes.innerHTML = '<option value="" disabled selected>Pilih Kecamatan dulu</option>';
+
+      const districts = await WILAYAH_SERVICE.getDistricts(regId);
+      selectKec.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>' +
+        districts.map(d => `<option value="${d.name}" data-id="${d.id}">${d.name}</option>`).join('');
+      selectKec.disabled = false;
+
+      if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${districts.length} Kecamatan ditemukan`;
+    }
+
+    async function onDokKecamatanChange() {
+      const selectKec = document.getElementById('form-dok-kecamatan');
+      const selectDes = document.getElementById('form-dok-desa');
+      const statusEl = document.getElementById('dok-wilayah-status');
+
+      const selectedOpt = selectKec.options[selectKec.selectedIndex];
+      const distId = selectedOpt?.getAttribute('data-id');
+
+      if (!distId) return;
+
+      if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-riau-gold"></i> Memuat desa...';
+      selectDes.disabled = true;
+      selectDes.innerHTML = '<option value="" disabled selected>Memuat desa...</option>';
+
+      const villages = await WILAYAH_SERVICE.getVillages(distId);
+      selectDes.innerHTML = '<option value="" disabled selected>Pilih Desa / Kelurahan...</option>' +
+        villages.map(v => `<option value="${v.name}">${v.name}</option>`).join('');
+      selectDes.disabled = false;
+
+      if (statusEl) statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${villages.length} Desa/Kelurahan siap dipilih`;
+    }
+
+    /**
+     * EVENT HANDLER WILAYAH BERJENJANG: FILTER WARTA DESA
+     */
+    async function onFilterKabupatenChange() {
+      const filterKab = document.getElementById('filter-kabupaten');
+      const filterKec = document.getElementById('filter-kecamatan');
+      const filterDes = document.getElementById('filter-desa');
+
+      const val = filterKab.value;
+      if (val === 'Semua' || !val) {
+        if (filterKec) filterKec.innerHTML = '<option value="">Semua Kecamatan</option>';
+        if (filterDes) filterDes.innerHTML = '<option value="">Semua Desa</option>';
+        applyWartaFilters();
+        return;
+      }
+
+      const selectedOpt = filterKab.options[filterKab.selectedIndex];
+      const regId = selectedOpt?.getAttribute('data-id') || val;
+
+      if (filterKec) {
+        filterKec.innerHTML = '<option value="">Memuat kecamatan...</option>';
+        const districts = await WILAYAH_SERVICE.getDistricts(regId);
+        filterKec.innerHTML = '<option value="">Semua Kecamatan</option>' +
+          districts.map(d => `<option value="${d.name}" data-id="${d.id}">${d.name}</option>`).join('');
+      }
+
+      if (filterDes) {
+        filterDes.innerHTML = '<option value="">Semua Desa</option>';
+      }
+
+      applyWartaFilters();
+    }
+
+    async function onFilterKecamatanChange() {
+      const filterKec = document.getElementById('filter-kecamatan');
+      const filterDes = document.getElementById('filter-desa');
+
+      const val = filterKec.value;
+      if (!val) {
+        if (filterDes) filterDes.innerHTML = '<option value="">Semua Desa</option>';
+        applyWartaFilters();
+        return;
+      }
+
+      const selectedOpt = filterKec.options[filterKec.selectedIndex];
+      const distId = selectedOpt?.getAttribute('data-id');
+
+      if (filterDes && distId) {
+        filterDes.innerHTML = '<option value="">Memuat desa...</option>';
+        const villages = await WILAYAH_SERVICE.getVillages(distId);
+        filterDes.innerHTML = '<option value="">Semua Desa</option>' +
+          villages.map(v => `<option value="${v.name}">${v.name}</option>`).join('');
+      }
+
+      applyWartaFilters();
+    }
+
+    /**
+     * EVENT HANDLER WILAYAH BERJENJANG: MODAL EDIT POST
+     */
+    async function onEditPostKabupatenChange() {
+      const kabSelect = document.getElementById('edit-post-kabupaten');
+      const kecSelect = document.getElementById('edit-post-kecamatan');
+      const desSelect = document.getElementById('edit-post-desa');
+
+      const selectedOpt = kabSelect.options[kabSelect.selectedIndex];
+      const regId = selectedOpt?.getAttribute('data-id') || kabSelect.value;
+      if (!regId) return;
+
+      kecSelect.innerHTML = '<option value="" disabled selected>Memuat kecamatan...</option>';
+      desSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan dulu</option>';
+
+      const districts = await WILAYAH_SERVICE.getDistricts(regId);
+      kecSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>' +
+        districts.map(d => `<option value="${d.name}" data-id="${d.id}">${d.name}</option>`).join('');
+    }
+
+    async function onEditPostKecamatanChange() {
+      const kecSelect = document.getElementById('edit-post-kecamatan');
+      const desSelect = document.getElementById('edit-post-desa');
+
+      const selectedOpt = kecSelect.options[kecSelect.selectedIndex];
+      const distId = selectedOpt?.getAttribute('data-id');
+      if (!distId) return;
+
+      desSelect.innerHTML = '<option value="" disabled selected>Memuat desa...</option>';
+      const villages = await WILAYAH_SERVICE.getVillages(distId);
+      desSelect.innerHTML = '<option value="" disabled selected>Pilih Desa / Kelurahan...</option>' +
+        villages.map(v => `<option value="${v.name}">${v.name}</option>`).join('');
+    }
+
+    /**
+     * INITIALIZATION ON DOM LOAD
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      initClock();
+      initAllWilayahDropdowns();
+      checkAuthSession();
+    });
+
+    /**
+     * Live Clock WIB
+     */
+    function initClock() {
+      const clockEl = document.getElementById('live-clock');
+      function update() {
+        const now = new Date();
+        const opts = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        if (clockEl) {
+          clockEl.textContent = new Intl.DateTimeFormat('id-ID', opts).format(now) + ' WIB';
+        }
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    /**
+     * Toggle Password Visibility
+     */
+    function togglePasswordVisibility() {
+      const input = document.getElementById('input-password');
+      const icon = document.getElementById('toggle-eye');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    /**
+     * Mobile Sidebar Toggle
+     */
+    function toggleSidebarMobile() {
+      const sidebar = document.getElementById('admin-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (!sidebar) return;
+      
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        overlay?.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        overlay?.classList.remove('hidden');
+      }
+    }
+
+    /**
+     * Session Authentication Handler
+     */
+    function checkAuthSession() {
+      const saved = sessionStorage.getItem('admin_session_auth');
+      if (saved) {
+        try {
+          const user = JSON.parse(saved);
+          ADMIN_STATE.currentUser = user;
+          showDashboardView(user);
+          return;
+        } catch (e) {
+          sessionStorage.removeItem('admin_session_auth');
+        }
+      }
+      showLoginView();
+    }
+
+    function showLoginView() {
+      document.getElementById('login-section').classList.remove('hidden');
+      document.getElementById('dashboard-section').classList.add('hidden');
+    }
+
+    function showDashboardView(user) {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('dashboard-section').classList.remove('hidden');
+
+      // Update User Badge in Sidebar
+      if (user) {
+        document.getElementById('user-display-name').textContent = user.nama_lengkap || user.username;
+        document.getElementById('user-display-role').textContent = user.role || "Super Admin";
+      }
+
+      // Initial Wilayah Dropdowns & Fetch Data
+      initAllWilayahDropdowns();
+      fetchAdminStats();
+      fetchAdminPosts();
+      fetchAdminGallery();
+      fetchAdminUsers();
+
+      // Default Tab
+      switchAdminTab('tab-kelola-warta');
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const user = document.getElementById('input-username').value.trim();
+      const pass = document.getElementById('input-password').value.trim();
+      const btn = document.getElementById('btn-login');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali';
+            if (res && res.success) {
+              sessionStorage.setItem('admin_session_auth', JSON.stringify(res.user));
+              ADMIN_STATE.currentUser = res.user;
+              showToast(`Selamat datang, ${res.user.nama_lengkap || res.user.username}!`, "success");
+              showDashboardView(res.user);
+            } else {
+              showToast(res.message || "Username atau password salah!", "error");
+            }
+          })
+          .withFailureHandler(err => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali';
+            showToast("Gagal terhubung ke database: " + err.toString(), "error");
+          })
+          .loginAdmin({ username: user, password: pass });
+      } else {
+        // Simulasi Lokal Offline / Laragon
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Panel Kendali';
+          if ((user === 'admin_riau' && pass === 'RiauMaju2026!') || (user === 'admin_desa' && pass === 'DesaRiau2026!')) {
+            const mockUser = {
+              username: user,
+              nama_lengkap: user === 'admin_riau' ? 'Tim Redaksi Lancang Kuning' : 'Koordinator Publikasi Desa',
+              role: user === 'admin_riau' ? 'Super Administrator' : 'Verifikator Warta',
+              email: 'redaksi@portaldesariau.id'
+            };
+            sessionStorage.setItem('admin_session_auth', JSON.stringify(mockUser));
+            ADMIN_STATE.currentUser = mockUser;
+            showToast(`Login Berhasil! Selamat datang, ${mockUser.nama_lengkap}`, "success");
+            showDashboardView(mockUser);
+          } else {
+            showToast("Username atau kata sandi tidak cocok dengan data Tbl_Admin!", "error");
+          }
+        }, 500);
+      }
+    }
+
+    function handleLogout() {
+      if (!confirm("Apakah Anda yakin ingin keluar dari panel admin?")) return;
+      sessionStorage.removeItem('admin_session_auth');
+      ADMIN_STATE.currentUser = null;
+      showToast("Anda telah keluar dari sesi administrator.", "info");
+      showLoginView();
+    }
+
+    /**
+     * Switch Sidebar Tabs
+     */
+    function switchAdminTab(tabKey) {
+      ADMIN_STATE.currentTab = tabKey;
+
+      const views = {
+        'tab-dashboard': document.getElementById('view-dashboard'),
+        'tab-kelola-warta': document.getElementById('view-kelola-warta'),
+        'tab-upload-warta': document.getElementById('view-upload-warta'),
+        'tab-kelola-dok': document.getElementById('view-kelola-dok'),
+        'tab-upload-dok': document.getElementById('view-upload-dok'),
+        'tab-daftar-admin': document.getElementById('view-daftar-admin')
+      };
+
+      const buttons = {
+        'tab-dashboard': document.getElementById('btn-tab-dashboard'),
+        'tab-kelola-warta': document.getElementById('btn-tab-kelola-warta'),
+        'tab-upload-warta': document.getElementById('btn-tab-upload-warta'),
+        'tab-kelola-dok': document.getElementById('btn-tab-kelola-dok'),
+        'tab-upload-dok': document.getElementById('btn-tab-upload-dok'),
+        'tab-daftar-admin': document.getElementById('btn-tab-daftar-admin')
+      };
+
+      const titles = {
+        'tab-dashboard': { title: "Dashboard & Analisis", crumb: "Administrasi / Ringkasan Data Utama" },
+        'tab-kelola-warta': { title: "Kelola Warta Desa", crumb: "Administrasi / Publikasi & Moderasi Warta" },
+        'tab-upload-warta': { title: "Upload Warta Baru", crumb: "Administrasi / Formulir Publikasi Berita" },
+        'tab-kelola-dok': { title: "Kelola Dokumentasi Foto", crumb: "Administrasi / Galeri Dokumentasi Kegiatan" },
+        'tab-upload-dok': { title: "Upload Dokumentasi Baru", crumb: "Administrasi / Formulir Dokumentasi Visual" },
+        'tab-daftar-admin': { title: "Daftar Administrator", crumb: "Administrasi / Manajemen Akun Pengelola" }
+      };
+
+      Object.keys(views).forEach(key => {
+        if (views[key]) {
+          if (key === tabKey) {
+            views[key].classList.remove('hidden');
+            buttons[key]?.classList.add('nav-item-active');
+            gsap.fromTo(views[key], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.25 });
+          } else {
+            views[key].classList.add('hidden');
+            buttons[key]?.classList.remove('nav-item-active');
+          }
+        }
+      });
+
+      if (titles[tabKey]) {
+        document.getElementById('topbar-title').textContent = titles[tabKey].title;
+        document.getElementById('topbar-breadcrumb').textContent = titles[tabKey].crumb;
+      }
+
+      // Tutup drawer di mobile jika terbuka
+      const sidebar = document.getElementById('admin-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (window.innerWidth < 768 && sidebar && !sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.add('-translate-x-full');
+        overlay?.classList.add('hidden');
+      }
+    }
+
+    /**
+     * FETCH DATA STATISTIK
+     */
+    function fetchAdminStats() {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success && res.data) {
+              const d = res.data;
+              document.getElementById('stat-berita-published').textContent = d.beritaPublished || 0;
+              document.getElementById('stat-berita-pending').textContent = d.beritaPending || 0;
+              document.getElementById('stat-dok-total').textContent = d.totalDok || 0;
+              document.getElementById('stat-admin-total').textContent = d.totalAdmins || 2;
+              document.getElementById('badge-warta-count').textContent = d.totalBerita || 0;
+              document.getElementById('badge-dok-count').textContent = d.totalDok || 0;
+            }
+          })
+          .adminGetDashboardStats();
+      } else {
+        document.getElementById('stat-berita-published').textContent = "6";
+        document.getElementById('stat-berita-pending').textContent = "1";
+        document.getElementById('stat-dok-total').textContent = "6";
+        document.getElementById('stat-admin-total').textContent = "2";
+        document.getElementById('badge-warta-count').textContent = "7";
+        document.getElementById('badge-dok-count').textContent = "6";
+      }
+    }
+
+    /**
+     * FETCH & FILTER WARTA DATA
+     */
+    function fetchAdminPosts() {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              ADMIN_STATE.posts = res.data || [];
+              applyWartaFilters();
+            }
+          })
+          .adminGetPosts({});
+      } else {
+        const stored = localStorage.getItem('portal_desa_shared_posts');
+        if (stored) {
+          try {
+            ADMIN_STATE.posts = JSON.parse(stored);
+            applyWartaFilters();
+            return;
+          } catch(e) {}
+        }
+
+        // Mock data lengkap dengan variasi tanggal, kabupaten, kecamatan, dan desa
+        const mock = [
+          {
+            id: "BRT-2026-006",
+            judul: "Melestarikan Tradisi Pacu Jalur: Semangat Gotong Royong Warga Kenegerian Kari",
+            slug: "melestarikan-tradisi-pacu-jalur-kenegerian-kari",
+            kategori: "Sosial & Tradisi",
+            desa: "Desa Pintu Gobang Kari",
+            kecamatan: "Kuantan Tengah",
+            kabupaten_kota: "Kuantan Singingi",
+            konten: "Ratusan warga menggelar prosesi 'Maelo Jalur' dari dalam rimba larangan untuk persiapan festival kebudayaan Pacu Jalur.",
+            thumbnail_url: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-05",
+            updated_at: "2026-10-05T10:00:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-005",
+            judul: "Pembangunan Jembatan Gantung Desa Rambah Utama Hubungkan Sentra Pangan",
+            slug: "pembangunan-jembatan-gantung-desa-rambah-utama",
+            kategori: "Infrastruktur & Digital",
+            desa: "Desa Rambah Utama",
+            kecamatan: "Rambah Samo",
+            kabupaten_kota: "Rokan Hulu",
+            konten: "Akses perekonomian masyarakat Desa Rambah Utama kini semakin terbuka lebar setelah selesainya jembatan gantung.",
+            thumbnail_url: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-04",
+            updated_at: "2026-10-04T15:30:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-004",
+            judul: "Inovasi Hilirisasi Kelapa Rakyat Desa Sungai Guntung Tembus Industri Kosmetik",
+            slug: "inovasi-hilirisasi-kelapa-rakyat-sungai-guntung",
+            kategori: "Pertanian & Perkebunan",
+            desa: "Desa Sungai Guntung",
+            kecamatan: "Kateman",
+            kabupaten_kota: "Indragiri Hilir",
+            konten: "Indragiri Hilir yang tersohor sebagai 'Negeri Hamparan Kelapa Dunia' menunjukkan terobosan di Desa Sungai Guntung.",
+            thumbnail_url: "https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-04",
+            updated_at: "2026-10-04T09:15:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-003",
+            judul: "Semarak Festival Gelombang Bono di Teluk Meranti: Pesta Adat dan Selancar Sungai",
+            slug: "semarak-festival-gelombang-bono-teluk-meranti",
+            kategori: "Pariwisata & Budaya",
+            desa: "Desa Teluk Meranti",
+            kecamatan: "Teluk Meranti",
+            kabupaten_kota: "Pelalawan",
+            konten: "Fenomena ombak pasang sungai terkenal dunia 'Gelombang Bono' di Sungai Kampar kembali menyedot ribuan peselancar lokal dan mancanegara.",
+            thumbnail_url: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-03",
+            updated_at: "2026-10-03T11:00:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-002",
+            judul: "Ekowisata Hutan Mangrove Desa Siak Kecil Raih Penghargaan Desa Berkelanjutan Nasional",
+            slug: "ekowisata-hutan-mangrove-desa-siak-kecil",
+            kategori: "Pariwisata & Budaya",
+            desa: "Desa Tanjung Belit",
+            kecamatan: "Siak Kecil",
+            kabupaten_kota: "Bengkalis",
+            konten: "Masyarakat Desa Tanjung Belit, Kecamatan Siak Kecil, berhasil membuktikan komitmen menjaga pesisir Riau. Konservasi mangrove seluas 120 hektare kini menjadi destinasi edukasi internasional.",
+            thumbnail_url: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-02",
+            updated_at: "2026-10-02T08:00:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-001",
+            judul: "Transformasi Digital Desa Muara Takus: BUMDes Pasarkan Keripik Nanas Hingga Mancanegara",
+            slug: "transformasi-digital-desa-muara-takus",
+            kategori: "Pemberdayaan Ekonomi",
+            desa: "Desa Muara Takus",
+            kecamatan: "XIII Koto Kampar",
+            kabupaten_kota: "Kampar",
+            konten: "Desa Muara Takus di Kecamatan XIII Koto Kampar mencatatkan sejarah baru. Melalui digitalisasi koperasi BUMDes Mandiri dan integrasi lokapasar nasional, produk olahan nanas khas Muara Takus kini menembus pasar ritel modern dan ekspor regional.",
+            thumbnail_url: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-01",
+            updated_at: "2026-10-01T14:20:00.000Z",
+            status: "Published",
+            disetor_oleh: "Admin Redaksi"
+          },
+          {
+            id: "BRT-2026-007",
+            judul: "Rancangan Jalur Sepeda Ekowisata Tepian Gambut Desa Dayun",
+            slug: "rancangan-jalur-sepeda-ekowisata-tepian-gambut-desa-dayun",
+            kategori: "Pariwisata & Budaya",
+            desa: "Desa Dayun",
+            kecamatan: "Dayun",
+            kabupaten_kota: "Siak",
+            konten: "Pemerintah Desa Dayun mengajukan rute wisata edukasi sepeda melintasi kawasan hijau konservasi gambut mandiri.",
+            thumbnail_url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80",
+            tanggal: "2026-10-05",
+            updated_at: "2026-10-05T12:00:00.000Z",
+            status: "Pending",
+            disetor_oleh: "Perangkat Desa Dayun"
+          }
+        ];
+        ADMIN_STATE.posts = mock;
+        localStorage.setItem('portal_desa_shared_posts', JSON.stringify(mock));
+        applyWartaFilters();
+      }
+    }
+
+    /**
+     * ADVANCED CLIENT-SIDE FILTER ENGINE
+     * Mendukung: Urutan waktu (newest/oldest), Kabupaten, Kecamatan, Desa, Kategori, Status, dan Keyword Search.
+     */
+    function applyWartaFilters() {
+      const sortOrder = document.getElementById('filter-sort-order')?.value || 'newest';
+      const kabupaten = document.getElementById('filter-kabupaten')?.value || 'Semua';
+      const kecamatan = (document.getElementById('filter-kecamatan')?.value || '').trim().toLowerCase();
+      const desa = (document.getElementById('filter-desa')?.value || '').trim().toLowerCase();
+      const kategori = document.getElementById('filter-kategori')?.value || 'Semua';
+      const status = document.getElementById('filter-status')?.value || 'All';
+      const search = (document.getElementById('filter-search-input')?.value || '').trim().toLowerCase();
+
+      let result = [...ADMIN_STATE.posts];
+
+      // 1. Filter Status
+      if (status !== 'All') {
+        result = result.filter(p => (p.status || '').toLowerCase() === status.toLowerCase());
+      }
+
+      // 2. Filter Kabupaten
+      if (kabupaten !== 'Semua') {
+        result = result.filter(p => (p.kabupaten_kota || '').toLowerCase() === kabupaten.toLowerCase());
+      }
+
+      // 3. Filter Kecamatan
+      if (kecamatan !== '') {
+        result = result.filter(p => {
+          const kec = (p.kecamatan || '').toLowerCase();
+          const desaStr = (p.desa || '').toLowerCase();
+          return kec.includes(kecamatan) || desaStr.includes(kecamatan);
+        });
+      }
+
+      // 4. Filter Desa
+      if (desa !== '') {
+        result = result.filter(p => (p.desa || '').toLowerCase().includes(desa));
+      }
+
+      // 5. Filter Kategori
+      if (kategori !== 'Semua') {
+        result = result.filter(p => (p.kategori || '').toLowerCase() === kategori.toLowerCase());
+      }
+
+      // 6. Filter Search Keyword
+      if (search !== '') {
+        result = result.filter(p => 
+          (p.judul || '').toLowerCase().includes(search) ||
+          (p.desa || '').toLowerCase().includes(search) ||
+          (p.kabupaten_kota || '').toLowerCase().includes(search) ||
+          (p.konten || '').toLowerCase().includes(search) ||
+          (p.disetor_oleh || '').toLowerCase().includes(search)
+        );
+      }
+
+      // 7. Sort Order (Waktu: Terbaru vs Pertama/Terlama)
+      result.sort((a, b) => {
+        const timeA = new Date(a.updated_at || a.tanggal || 0).getTime();
+        const timeB = new Date(b.updated_at || b.tanggal || 0).getTime();
+        if (sortOrder === 'oldest') {
+          return timeA - timeB; // Pertama / Terlama lebih dahulu
+        } else {
+          return timeB - timeA; // Terbaru lebih dahulu
+        }
+      });
+
+      ADMIN_STATE.filteredPosts = result;
+      renderAdminPostsTable(result);
+
+      // Update counter
+      const countEl = document.getElementById('filter-result-count');
+      if (countEl) countEl.textContent = result.length;
+    }
+
+    function resetWartaFilters() {
+      if (document.getElementById('filter-sort-order')) document.getElementById('filter-sort-order').value = 'newest';
+      if (document.getElementById('filter-kabupaten')) document.getElementById('filter-kabupaten').value = 'Semua';
+      
+      const filterKec = document.getElementById('filter-kecamatan');
+      if (filterKec) {
+        filterKec.innerHTML = '<option value="">Semua Kecamatan</option>';
+        filterKec.value = '';
+      }
+      const filterDes = document.getElementById('filter-desa');
+      if (filterDes) {
+        filterDes.innerHTML = '<option value="">Semua Desa</option>';
+        filterDes.value = '';
+      }
+      if (document.getElementById('filter-kategori')) document.getElementById('filter-kategori').value = 'Semua';
+      if (document.getElementById('filter-status')) document.getElementById('filter-status').value = 'All';
+      if (document.getElementById('filter-search-input')) document.getElementById('filter-search-input').value = '';
+      applyWartaFilters();
+      showToast("Filter berhasil direset ke pengaturan default", "info");
+    }
+
+    /**
+     * Render Tabel Warta Berita
+     */
+    function renderAdminPostsTable(posts) {
+      const tbody = document.getElementById('admin-posts-tbody');
+      const empty = document.getElementById('admin-posts-empty');
+      if (!tbody) return;
+
+      if (!posts || posts.length === 0) {
+        tbody.innerHTML = '';
+        empty?.classList.remove('hidden');
+        return;
+      }
+
+      empty?.classList.add('hidden');
+
+      tbody.innerHTML = posts.map(p => {
+        const isPending = (p.status || "").toLowerCase() === 'pending';
+        const isPublished = (p.status || "").toLowerCase() === 'published';
+        
+        let statusBadge = '';
+        if (isPending) {
+          statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse"><i class="fa-regular fa-clock mr-1"></i>Review</span>';
+        } else if (isPublished) {
+          statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"><i class="fa-solid fa-check mr-1"></i>Terbit</span>';
+        } else {
+          statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-500/20 text-red-300 border border-red-500/40"><i class="fa-solid fa-xmark mr-1"></i>Ditolak</span>';
+        }
+
+        const thumb = p.thumbnail_url || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=150&q=80';
+        const kecStr = p.kecamatan ? `Kec. ${p.kecamatan}, ` : '';
+
+        return `
+          <tr class="hover:bg-white/5 transition">
+            <td class="p-4">
+              <img src="${thumb}" class="w-14 h-12 object-cover rounded-xl border border-white/10 shadow">
+            </td>
+            <td class="p-4 max-w-xs sm:max-w-sm">
+              <div class="font-bold text-white text-xs line-clamp-1">${p.judul}</div>
+              <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-riau-gold"></i> 
+                <span>${p.desa}, ${kecStr}Kab. ${p.kabupaten_kota}</span>
+              </div>
+            </td>
+            <td class="p-4 whitespace-nowrap">
+              <span class="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[11px] text-gray-300">
+                ${p.kategori || 'Umum'}
+              </span>
+            </td>
+            <td class="p-4 whitespace-nowrap text-gray-400 text-[11px]">
+              ${p.disetor_oleh || 'Admin'}
+            </td>
+            <td class="p-4 whitespace-nowrap text-gray-400 text-[11px] font-mono">
+              ${p.tanggal || '-'}
+            </td>
+            <td class="p-4 whitespace-nowrap">
+              ${statusBadge}
+            </td>
+            <td class="p-4 whitespace-nowrap text-center">
+              <div class="inline-flex items-center gap-1.5">
+                ${
+                  !isPublished ? `
+                    <button onclick="approvePost('${p.id}')" title="Terbitkan ke Publik" class="p-1.5 rounded-lg bg-emerald-950 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 transition">
+                      <i class="fa-solid fa-check"></i>
+                    </button>
+                  ` : `
+                    <button onclick="draftPost('${p.id}')" title="Tarik ke Draf" class="p-1.5 rounded-lg bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-amber-300 transition">
+                      <i class="fa-solid fa-arrow-rotate-left"></i>
+                    </button>
+                  `
+                }
+                <button onclick='openEditModal(${JSON.stringify(p).replace(/'/g, "&apos;")})' title="Sunting Berita" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button onclick="deletePost('${p.id}')" title="Hapus Permanen" class="p-1.5 rounded-lg bg-red-950/70 hover:bg-red-900 border border-red-500/40 text-red-300 transition">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /**
+     * ACTION: Approve, Draft, Delete Warta
+     */
+    function approvePost(id) {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              showToast("Warta berhasil dipublikasikan!", "success");
+              fetchAdminPosts();
+              fetchAdminStats();
+            }
+          })
+          .adminUpdatePostStatus(id, "Published");
+      } else {
+        const item = ADMIN_STATE.posts.find(p => p.id === id);
+        if (item) {
+          item.status = "Published";
+          item.updated_at = new Date().toISOString();
+        }
+        localStorage.setItem('portal_desa_shared_posts', JSON.stringify(ADMIN_STATE.posts));
+        showToast("Warta berhasil dipublikasikan ke portal publik!", "success");
+        applyWartaFilters();
+        fetchAdminStats();
+      }
+    }
+
+    function draftPost(id) {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              showToast("Warta ditarik kembali menjadi draf", "info");
+              fetchAdminPosts();
+              fetchAdminStats();
+            }
+          })
+          .adminUpdatePostStatus(id, "Pending");
+      } else {
+        const item = ADMIN_STATE.posts.find(p => p.id === id);
+        if (item) {
+          item.status = "Pending";
+          item.updated_at = new Date().toISOString();
+        }
+        localStorage.setItem('portal_desa_shared_posts', JSON.stringify(ADMIN_STATE.posts));
+        showToast("Warta ditarik menjadi draf", "info");
+        applyWartaFilters();
+        fetchAdminStats();
+      }
+    }
+
+    function deletePost(id) {
+      if (!confirm(`Hapus permanen warta dengan ID ${id}? Tindakan ini tidak dapat dibatalkan.`)) return;
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              showToast("Warta berhasil dihapus dari database", "success");
+              fetchAdminPosts();
+              fetchAdminStats();
+            }
+          })
+          .adminDeletePost(id);
+      } else {
+        ADMIN_STATE.posts = ADMIN_STATE.posts.filter(p => p.id !== id);
+        localStorage.setItem('portal_desa_shared_posts', JSON.stringify(ADMIN_STATE.posts));
+        showToast("Warta berhasil dihapus", "success");
+        applyWartaFilters();
+        fetchAdminStats();
+      }
+    }
+
+    /**
+     * MODAL EDIT WARTA (DENGAN KASCADING WILAYAH)
+     */
+    async function openEditModal(post) {
+      document.getElementById('edit-post-id').value = post.id;
+      document.getElementById('edit-post-judul').value = post.judul || '';
+      document.getElementById('edit-post-kategori').value = post.kategori || 'Pemberdayaan Ekonomi';
+      document.getElementById('edit-post-konten').value = post.konten || '';
+      document.getElementById('edit-post-status').value = post.status || 'Published';
+
+      const kabSelect = document.getElementById('edit-post-kabupaten');
+      const kecSelect = document.getElementById('edit-post-kecamatan');
+      const desSelect = document.getElementById('edit-post-desa');
+
+      const kabVal = post.kabupaten_kota || 'Kampar';
+      if (kabSelect) kabSelect.value = kabVal;
+
+      // Ambil daftar kecamatan untuk kabupaten ini
+      if (kecSelect) {
+        kecSelect.innerHTML = '<option value="" disabled selected>Memuat kecamatan...</option>';
+        const districts = await WILAYAH_SERVICE.getDistricts(kabVal);
+        kecSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan...</option>' +
+          districts.map(d => `<option value="${d.name}" data-id="${d.id}">${d.name}</option>`).join('');
+
+        let matchedDist = districts.find(d => 
+          d.name.toLowerCase() === (post.kecamatan || '').toLowerCase() || 
+          (post.desa || '').toLowerCase().includes(d.name.toLowerCase())
+        );
+        if (!matchedDist && districts.length > 0) matchedDist = districts[0];
+
+        if (matchedDist) {
+          kecSelect.value = matchedDist.name;
+          if (desSelect) {
+            desSelect.innerHTML = '<option value="" disabled selected>Memuat desa...</option>';
+            const villages = await WILAYAH_SERVICE.getVillages(matchedDist.id);
+            desSelect.innerHTML = '<option value="" disabled selected>Pilih Desa...</option>' +
+              villages.map(v => `<option value="${v.name}">${v.name}</option>`).join('');
+
+            const matchedVill = villages.find(v => v.name.toLowerCase() === (post.desa || '').toLowerCase());
+            if (matchedVill) {
+              desSelect.value = matchedVill.name;
+            } else if (post.desa) {
+              desSelect.innerHTML += `<option value="${post.desa}" selected>${post.desa}</option>`;
+              desSelect.value = post.desa;
+            }
+          }
+        }
+      }
+
+      document.getElementById('modal-edit-post').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('modal-edit-post').classList.add('hidden');
+    }
+
+    function handleEditSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-post-id').value;
+      const updatedData = {
+        judul: document.getElementById('edit-post-judul').value,
+        kategori: document.getElementById('edit-post-kategori').value,
+        kabupaten_kota: document.getElementById('edit-post-kabupaten').value,
+        kecamatan: document.getElementById('edit-post-kecamatan').value,
+        desa: document.getElementById('edit-post-desa').value,
+        konten: document.getElementById('edit-post-konten').value,
+        status: document.getElementById('edit-post-status').value,
+        updated_at: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btn-submit-edit');
+      btn.disabled = true;
+      btn.textContent = "Menyimpan...";
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            btn.disabled = false;
+            btn.textContent = "Simpan Perubahan";
+            if (res && res.success) {
+              showToast("Perubahan warta berhasil disimpan!", "success");
+              closeEditModal();
+              fetchAdminPosts();
+            } else {
+              showToast(res.message || "Gagal update warta", "error");
+            }
+          })
+          .adminUpdatePost(id, updatedData);
+      } else {
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = "Simpan Perubahan";
+          const item = ADMIN_STATE.posts.find(p => p.id === id);
+          if (item) {
+            Object.assign(item, updatedData);
+          }
+          localStorage.setItem('portal_desa_shared_posts', JSON.stringify(ADMIN_STATE.posts));
+          showToast("Perubahan warta berhasil disimpan!", "success");
+          closeEditModal();
+          applyWartaFilters();
+        }, 400);
+      }
+    }
+
+    /**
+     * UPLOAD WARTA BARU HANDLER
+     */
+    let createWartaImageBase64 = null;
+    let createWartaImageName = null;
+
+    function previewCreateWartaImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        createWartaImageBase64 = evt.target.result;
+        createWartaImageName = file.name;
+        document.getElementById('create-warta-preview-img').src = evt.target.result;
+        document.getElementById('create-warta-preview-name').textContent = file.name;
+        document.getElementById('create-warta-preview-box').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function cancelCreateWartaImage() {
+      createWartaImageBase64 = null;
+      createWartaImageName = null;
+      document.getElementById('form-create-file').value = '';
+      document.getElementById('create-warta-preview-box').classList.add('hidden');
+    }
+
+    function handleAdminCreateArticle(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-create-warta');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses & Menerbitkan...';
+
+      const nowIso = new Date().toISOString();
+      const todayFormatted = nowIso.split('T')[0];
+
+      const formData = {
+        judul: document.getElementById('form-create-judul').value,
+        kabupaten_kota: document.getElementById('form-create-kabupaten').value,
+        kecamatan: document.getElementById('form-create-kecamatan').value,
+        desa: document.getElementById('form-create-desa').value,
+        kategori: document.getElementById('form-create-kategori').value,
+        disetor_oleh: document.getElementById('form-create-penulis').value || ADMIN_STATE.currentUser?.nama_lengkap || "Admin",
+        tanggal: document.getElementById('form-create-tanggal').value || todayFormatted,
+        updated_at: nowIso,
+        status: document.getElementById('form-create-status').value || "Published",
+        konten: document.getElementById('form-create-konten').value,
+        thumbnailBase64: createWartaImageBase64 || "",
+        thumbnailName: createWartaImageName || "cover.jpg"
+      };
+
+      const resetWartaForm = () => {
+        cancelCreateWartaImage();
+        e.target.reset();
+        const kec = document.getElementById('form-create-kecamatan');
+        if (kec) { kec.innerHTML = '<option value="" disabled selected>Pilih Kabupaten dulu</option>'; kec.disabled = true; }
+        const des = document.getElementById('form-create-desa');
+        if (des) { des.innerHTML = '<option value="" disabled selected>Pilih Kecamatan dulu</option>'; des.disabled = true; }
+        const stat = document.getElementById('warta-wilayah-status');
+        if (stat) stat.innerHTML = '<i class="fa-solid fa-bolt text-riau-gold"></i> Live API Wilayah';
+      };
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publikasikan Warta Sekarang';
+            if (res && res.success) {
+              showToast("Warta berhasil disimpan dan diterbitkan!", "success");
+              resetWartaForm();
+              switchAdminTab('tab-kelola-warta');
+              fetchAdminPosts();
+              fetchAdminStats();
+            } else {
+              showToast(res.message || "Gagal menerbitkan warta", "error");
+            }
+          })
+          .uploadArticle(formData);
+      } else {
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publikasikan Warta Sekarang';
+          const newPost = {
+            id: "BRT-2026-" + Math.floor(100 + Math.random() * 900),
+            ...formData,
+            thumbnail_url: formData.thumbnailBase64 || "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=400&q=80"
+          };
+          ADMIN_STATE.posts.unshift(newPost);
+          localStorage.setItem('portal_desa_shared_posts', JSON.stringify(ADMIN_STATE.posts));
+          showToast("Warta berhasil diterbitkan!", "success");
+          resetWartaForm();
+          switchAdminTab('tab-kelola-warta');
+          applyWartaFilters();
+          fetchAdminStats();
+        }, 500);
+      }
+    }
+
+    /**
+     * DOKUMENTASI HANDLER
+     */
+    let createDokImageBase64 = null;
+    let createDokImageName = null;
+
+    function previewDokImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        createDokImageBase64 = evt.target.result;
+        createDokImageName = file.name;
+        document.getElementById('dok-preview-img').src = evt.target.result;
+        document.getElementById('dok-preview-name').textContent = file.name;
+        document.getElementById('dok-preview-box').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleAdminCreateDok(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-dok');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...';
+
+      const kab = document.getElementById('form-dok-kabupaten')?.value || '';
+      const kec = document.getElementById('form-dok-kecamatan')?.value || '';
+      const des = document.getElementById('form-dok-desa')?.value || '';
+      const lokasiStr = des ? `${des}, Kec. ${kec}, Kab. ${kab}` : (kab ? `Kab. ${kab}` : 'Riau');
+      const nowIso = new Date().toISOString();
+
+      const formData = {
+        judul_kegiatan: document.getElementById('form-dok-judul').value,
+        lokasi_desa: lokasiStr,
+        kabupaten_kota: kab,
+        kecamatan: kec,
+        desa: des,
+        tanggal: document.getElementById('form-dok-tanggal').value || nowIso.split('T')[0],
+        updated_at: nowIso,
+        deskripsi: document.getElementById('form-dok-deskripsi').value,
+        fotoBase64: createDokImageBase64 || "",
+        fotoName: createDokImageName || "dok.jpg",
+        status: "Published",
+        disetor_oleh: ADMIN_STATE.currentUser?.nama_lengkap || "Admin"
+      };
+
+      const resetDokForm = () => {
+        createDokImageBase64 = null;
+        document.getElementById('dok-preview-box')?.classList.add('hidden');
+        e.target.reset();
+        const kecEl = document.getElementById('form-dok-kecamatan');
+        if (kecEl) { kecEl.innerHTML = '<option value="" disabled selected>Pilih Kabupaten dulu</option>'; kecEl.disabled = true; }
+        const desEl = document.getElementById('form-dok-desa');
+        if (desEl) { desEl.innerHTML = '<option value="" disabled selected>Pilih Kecamatan dulu</option>'; desEl.disabled = true; }
+        const statEl = document.getElementById('dok-wilayah-status');
+        if (statEl) statEl.innerHTML = '<i class="fa-solid fa-bolt text-riau-gold"></i> Live API Wilayah';
+      };
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Galeri Publik';
+            if (res && res.success) {
+              showToast("Dokumentasi foto berhasil disimpan!", "success");
+              resetDokForm();
+              switchAdminTab('tab-kelola-dok');
+              fetchAdminGallery();
+              fetchAdminStats();
+            } else {
+              showToast(res.message || "Gagal menyimpan dokumentasi", "error");
+            }
+          })
+          .uploadDokumentasi(formData);
+      } else {
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Galeri Publik';
+          const newDok = {
+            id: "DOC-2026-" + Math.floor(100 + Math.random() * 900),
+            ...formData,
+            foto_url: formData.fotoBase64 || "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=400&q=80"
+          };
+          ADMIN_STATE.gallery.unshift(newDok);
+          localStorage.setItem('portal_desa_shared_gallery', JSON.stringify(ADMIN_STATE.gallery));
+          showToast("Dokumentasi foto berhasil disimpan!", "success");
+          resetDokForm();
+          switchAdminTab('tab-kelola-dok');
+          renderAdminGallery(ADMIN_STATE.gallery);
+          fetchAdminStats();
+        }, 500);
+      }
+    }
+
+    function fetchAdminGallery() {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              ADMIN_STATE.gallery = res.data || [];
+              renderAdminGallery(res.data);
+            }
+          })
+          .adminGetGallery({});
+      } else {
+        const stored = localStorage.getItem('portal_desa_shared_gallery');
+        if (stored) {
+          try {
+            ADMIN_STATE.gallery = JSON.parse(stored);
+            renderAdminGallery(ADMIN_STATE.gallery);
+            return;
+          } catch(e) {}
+        }
+
+        const mockGallery = [
+          {
+            id: "DOC-006",
+            judul_kegiatan: "Patroli Drone Masyarakat Peduli Api",
+            lokasi_desa: "Desa Rimbo Panjang, Kampar",
+            foto_url: "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Monitoring suhu lahan gambut untuk pencegahan kebakaran hutan.",
+            tanggal: "2026-10-05"
+          },
+          {
+            id: "DOC-005",
+            judul_kegiatan: "Panen Padi Pasang Surut Berkelanjutan",
+            lokasi_desa: "Desa Kuala Enok, Indragiri Hilir",
+            foto_url: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Hasil panen padi organik melimpah di areal pasang surut.",
+            tanggal: "2026-10-04"
+          },
+          {
+            id: "DOC-004",
+            judul_kegiatan: "Pentas Seni Zapin Generasi Muda",
+            lokasi_desa: "Desa Meskom, Bengkalis",
+            foto_url: "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Pementasan tari tradisi Melayu pesisir Selat Melaka.",
+            tanggal: "2026-10-03"
+          },
+          {
+            id: "DOC-003",
+            judul_kegiatan: "Pemeriksaan Nutrisi & Cegah Stunting",
+            lokasi_desa: "Desa Kuok, Kampar",
+            foto_url: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Pemberian makanan tambahan balita di posyandu terpadu.",
+            tanggal: "2026-10-03"
+          },
+          {
+            id: "DOC-002",
+            judul_kegiatan: "Gotong Royong Penghijauan Tepian Sungai",
+            lokasi_desa: "Desa Mempura, Siak",
+            foto_url: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Penanaman pohon ketapang dan pembersihan aliran air desa.",
+            tanggal: "2026-10-02"
+          },
+          {
+            id: "DOC-001",
+            judul_kegiatan: "Pelatihan Akuntansi BUMDes Mandiri",
+            lokasi_desa: "Desa Dayun, Siak",
+            foto_url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80",
+            deskripsi: "Workshop tata kelola kas digital bersama puluhan aparat desa.",
+            tanggal: "2026-10-01"
+          }
+        ];
+        ADMIN_STATE.gallery = mockGallery;
+        localStorage.setItem('portal_desa_shared_gallery', JSON.stringify(mockGallery));
+        renderAdminGallery(mockGallery);
+      }
+    }
+
+    function renderAdminGallery(gallery) {
+      const grid = document.getElementById('admin-gallery-grid');
+      const empty = document.getElementById('admin-gallery-empty');
+      if (!grid) return;
+
+      if (!gallery || gallery.length === 0) {
+        grid.innerHTML = '';
+        empty?.classList.remove('hidden');
+        return;
+      }
+
+      empty?.classList.add('hidden');
+
+      grid.innerHTML = gallery.map(item => `
+        <div class="glass-panel rounded-2xl overflow-hidden border border-emerald-500/25 group space-y-3 p-3">
+          <div class="relative h-44 rounded-xl overflow-hidden bg-emerald-950">
+            <img src="${item.foto_url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950/90 text-emerald-300 border border-emerald-500/30">
+                ${item.lokasi_desa}
+              </span>
+              <span class="text-[10px] text-gray-300 bg-black/60 px-2 py-0.5 rounded font-mono">
+                ${item.tanggal || '-'}
+              </span>
+            </div>
+          </div>
+          <div class="px-1 space-y-1">
+            <h4 class="font-royal text-sm font-bold text-white line-clamp-1">${item.judul_kegiatan}</h4>
+            <p class="text-[11px] text-gray-400 line-clamp-2 leading-relaxed">${item.deskripsi || ''}</p>
+          </div>
+          <div class="pt-2 border-t border-white/5 flex items-center justify-between text-xs px-1">
+            <span class="text-[10px] text-gray-500 font-mono">ID: ${item.id}</span>
+            <button onclick="deleteGalleryItem('${item.id}')" class="px-3 py-1 rounded-lg bg-red-950/70 hover:bg-red-900 border border-red-500/30 text-red-300 text-[11px] transition flex items-center gap-1">
+              <i class="fa-solid fa-trash-can"></i> Hapus
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function deleteGalleryItem(id) {
+      if (!confirm(`Hapus foto dokumentasi ID ${id}?`)) return;
+
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              showToast("Dokumentasi berhasil dihapus", "success");
+              fetchAdminGallery();
+              fetchAdminStats();
+            }
+          })
+          .adminDeleteGallery(id);
+      } else {
+        ADMIN_STATE.gallery = ADMIN_STATE.gallery.filter(g => g.id !== id);
+        localStorage.setItem('portal_desa_shared_gallery', JSON.stringify(ADMIN_STATE.gallery));
+        showToast("Foto dokumentasi dihapus", "success");
+        renderAdminGallery(ADMIN_STATE.gallery);
+        fetchAdminStats();
+      }
+    }
+
+    /**
+     * FETCH DAFTAR ADMINISTRATOR
+     */
+    function fetchAdminUsers() {
+      if (ADMIN_STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) renderAdminUsersTable(res.data);
+          })
+          .adminGetAdmins();
+      } else {
+        const mockAdmins = [
+          { id: "ADM-001", username: "admin_riau", nama_lengkap: "Tim Redaksi Lancang Kuning", role: "Super Administrator", email: "redaksi@portaldesariau.id", status: "Active" },
+          { id: "ADM-002", username: "admin_desa", nama_lengkap: "Koordinator Publikasi Desa", role: "Verifikator Warta", email: "verifikator@portaldesariau.id", status: "Active" }
+        ];
+        renderAdminUsersTable(mockAdmins);
+      }
+    }
+
+    function renderAdminUsersTable(admins) {
+      const tbody = document.getElementById('admin-users-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = (admins || []).map(a => `
+        <tr class="hover:bg-white/5 transition">
+          <td class="p-4 font-mono text-gray-400 text-xs">${a.id || '-'}</td>
+          <td class="p-4 font-mono font-bold text-white text-xs">${a.username}</td>
+          <td class="p-4 font-medium text-amber-200 text-xs">${a.nama_lengkap}</td>
+          <td class="p-4">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${a.role?.includes('Super') ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">
+              ${a.role || 'Admin'}
+            </span>
+          </td>
+          <td class="p-4 text-gray-400 font-mono text-xs">${a.email || '-'}</td>
+          <td class="p-4">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Aktif
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    /**
+     * TOAST NOTIFICATION UTILITY
+     */
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      const isInfo = type === 'info';
+      
+      let borderBg = 'bg-emerald-950/95 border-riau-gold/40 text-amber-200';
+      let icon = 'fa-solid fa-circle-check text-riau-gold';
+
+      if (!isSuccess && !isInfo) {
+        borderBg = 'bg-red-950/95 border-red-500/40 text-red-200';
+        icon = 'fa-solid fa-triangle-exclamation text-red-400';
+      } else if (isInfo) {
+        borderBg = 'bg-slate-950/95 border-blue-500/40 text-blue-200';
+        icon = 'fa-solid fa-circle-info text-blue-400';
+      }
+
+      toast.className = `p-4 rounded-2xl shadow-2xl border text-xs font-semibold flex items-center gap-3 backdrop-blur-md transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-auto ${borderBg}`;
+      toast.innerHTML = `<i class="${icon} text-base"></i><span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>

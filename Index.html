@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Portal Desa Se-Provinsi Riau | Lancang Kuning Digital</title>
+  <meta name="description" content="Agregator Berita dan Dokumentasi Kegiatan Desa Se-Provinsi Riau. Menampilkan inovasi, potensi wisata, dan kearifan lokal 12 Kabupaten/Kota di Bumi Lancang Kuning.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Cinzel (Royal Malay Feel) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN with Custom Luxury Configuration -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            riau: {
+              obsidian: '#020d09',
+              dark: '#051812',
+              card: 'rgba(8, 29, 22, 0.75)',
+              emerald: '#059669',
+              emeraldBright: '#10b981',
+              emeraldDeep: '#022c22',
+              gold: '#f59e0b',
+              goldLight: '#fde68a',
+              goldDark: '#b45309',
+              goldMetallic: '#eab308'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+            royal: ['"Cinzel"', 'serif']
+          },
+          boxShadow: {
+            'gold-glow': '0 0 25px -5px rgba(245, 158, 11, 0.35)',
+            'emerald-glow': '0 0 30px -5px rgba(16, 185, 129, 0.3)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Three.js & GSAP for 3D and Luxury Motion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* Custom Luxury Styling & Glassmorphism */
+    :root {
+      --gold-gradient: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
+      --emerald-gradient: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+    }
+
+    body {
+      background-color: #020d09;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(5, 150, 105, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 85% 65%, rgba(245, 158, 11, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* Songket Riau Subtle Geometric Pattern Overlay */
+    .riau-pattern {
+      background-image: radial-gradient(rgba(245, 158, 11, 0.12) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    .glass-panel {
+      background: rgba(8, 29, 22, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.18);
+    }
+
+    .glass-card {
+      background: rgba(5, 24, 18, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 15px 35px -5px rgba(245, 158, 11, 0.18), 0 0 15px rgba(16, 185, 129, 0.15);
+    }
+
+    .gold-gradient-text {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .emerald-gradient-text {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020d09;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #064e3b;
+      border-radius: 4px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Sembunyikan scrollbar untuk carousel & filter ribbon */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    /* Gradien Fade Halus di Sisi Kiri & Kanan Carousel */
+    .fade-edges {
+      mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+    }
+
+    /* Pendaran Dinamis untuk Tombol Filter Aktif */
+    @keyframes activePulse {
+      0%, 100% { box-shadow: 0 0 15px -2px rgba(245, 158, 11, 0.45); }
+      50% { box-shadow: 0 0 25px 2px rgba(245, 158, 11, 0.75); }
+    }
+    .active-pill-glow {
+      animation: activePulse 2.5s ease-in-out infinite;
+    }
+
+    /* 3D Tilt Wrapper */
+    .tilt-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    .tilt-inner {
+      transition: transform 0.15s ease-out;
+    }
+
+    /* Hero Canvas 3D Holographic Globe */
+    #hero-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
+    }
+  </style>
+</head>
+<body class="riau-pattern min-h-screen flex flex-col antialiased selection:bg-riau-gold selection:text-black">
+
+  <!-- ========================================================================= -->
+  <!-- NAVBAR UTAMA ELEGAN -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-riau-gold/20 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand & Lambang Lancang Kuning -->
+      <a href="#beranda" class="flex items-center gap-3.5 group">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-riau-emeraldDeep via-riau-emerald to-riau-gold p-0.5 shadow-gold-glow flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+          <div class="w-full h-full bg-riau-dark rounded-[10px] flex items-center justify-center">
+            <!-- Icon Perahu Lancang Kuning / Mahkota Melayu -->
+            <i class="fa-solid fa-sailboat text-riau-gold text-xl group-hover:rotate-12 transition-transform"></i>
+          </div>
+        </div>
+        <div>
+          <span class="font-royal text-lg md:text-xl font-bold tracking-wider gold-gradient-text block leading-tight">
+            LANCANG KUNING
+          </span>
+          <span class="text-xs text-emerald-400/90 font-medium tracking-widest uppercase block">
+            Portal Agregator Desa Riau
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Menu -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <a href="#beranda" class="text-gray-300 hover:text-riau-gold transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-house text-xs text-riau-gold/70"></i> Beranda
+        </a>
+        <a href="#kabar-desa" class="text-gray-300 hover:text-riau-gold transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-newspaper text-xs text-riau-gold/70"></i> Kabar Desa
+        </a>
+        <a href="#galeri-desa" class="text-gray-300 hover:text-riau-gold transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-images text-xs text-riau-gold/70"></i> Galeri Dokumentasi
+        </a>
+        <a href="#wilayah-riau" class="text-gray-300 hover:text-riau-gold transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-map-location-dot text-xs text-riau-gold/70"></i> 12 Wilayah
+        </a>
+      </nav>
+
+      <!-- Action Button & Mobile Menu Toggle -->
+      <div class="flex items-center gap-3">
+        <button onclick="contactAdminWA()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 text-white shadow-emerald-glow hover:brightness-110 active:scale-95 transition-all">
+          <i class="fa-solid fa-headset text-sm"></i> Hubungi Kami
+        </button>
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-riau-gold hover:bg-emerald-950/60 transition">
+          <i class="fa-solid fa-bars-staggered text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-3 pb-6 border-t border-riau-gold/15 bg-riau-dark/95 backdrop-blur-xl space-y-3 text-sm">
+      <a href="#beranda" class="block py-2 text-gray-200 hover:text-riau-gold"><i class="fa-solid fa-house w-6 text-riau-gold"></i> Beranda</a>
+      <a href="#kabar-desa" class="block py-2 text-gray-200 hover:text-riau-gold"><i class="fa-solid fa-newspaper w-6 text-riau-gold"></i> Kabar Desa</a>
+      <a href="#galeri-desa" class="block py-2 text-gray-200 hover:text-riau-gold"><i class="fa-solid fa-images w-6 text-riau-gold"></i> Galeri Dokumentasi</a>
+      <a href="#wilayah-riau" class="block py-2 text-gray-200 hover:text-riau-gold"><i class="fa-solid fa-map-location-dot w-6 text-riau-gold"></i> 12 Kabupaten / Kota</a>
+      <div class="pt-3">
+        <button onclick="contactAdminWA()" class="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-center shadow-emerald-glow flex items-center justify-center gap-2">
+          <i class="fa-solid fa-headset text-sm"></i> Hubungi Kami
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- HERO SECTION WITH 3D THREE.JS PARTICLE WAVE (GELOMBANG BONO & GOLD DUST) -->
+  <!-- ========================================================================= -->
+  <section id="beranda" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-16 px-4 sm:px-6 lg:px-8">
+    
+    <!-- 3D Three.js Container -->
+    <div id="hero-canvas-container"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto text-center space-y-8">
+      
+      <!-- Top Pill Badge -->
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-riau-gold/30 bg-emerald-950/60 backdrop-blur-md shadow-gold-glow animate-pulse">
+        <span class="w-2.5 h-2.5 rounded-full bg-riau-gold"></span>
+        <span class="text-xs font-semibold tracking-wider text-amber-200 uppercase">
+          Portal Resmi Agregasi Kemajuan Desa Riau 2026
+        </span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-royal text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Menyemai Karya Desa di <br>
+        <span class="gold-gradient-text drop-shadow-md">Bumi Lancang Kuning</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-300 font-light leading-relaxed">
+        Pusat informasi terpadu kegiatan desa, pemberdayaan BUMDes, kearifan adat Melayu, dan geliat pembangunan 
+        <span class="text-emerald-400 font-medium">1.850+ desa</span> di <span class="text-amber-300 font-medium">12 Kabupaten & Kota se-Provinsi Riau</span>.
+      </p>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+        <a href="#kabar-desa" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 text-white shadow-emerald-glow hover:brightness-110 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-compass"></i> Jelajahi Kabar Terkini
+        </a>
+        <button onclick="contactAdminWA()" class="px-7 py-3.5 rounded-xl font-semibold text-sm border border-emerald-500/50 bg-riau-obsidian/70 text-emerald-300 hover:bg-emerald-950/60 hover:border-emerald-400 hover:-translate-y-0.5 transition-all flex items-center gap-2 backdrop-blur-md cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> Hubungi Kami (WhatsApp)
+        </button>
+      </div>
+
+      <!-- Stats Bar Glassmorphism -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-10 max-w-4xl mx-auto">
+        <div class="glass-panel p-4 rounded-2xl border border-white/5 text-center">
+          <div class="text-2xl sm:text-3xl font-bold font-display gold-gradient-text" id="stat-desa">1.850+</div>
+          <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Desa Terhubung</div>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-white/5 text-center">
+          <div class="text-2xl sm:text-3xl font-bold font-display emerald-gradient-text" id="stat-kabupaten">12</div>
+          <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Kabupaten / Kota</div>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-white/5 text-center">
+          <div class="text-2xl sm:text-3xl font-bold font-display gold-gradient-text" id="stat-berita">--</div>
+          <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Kabar Terbit</div>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-white/5 text-center">
+          <div class="text-2xl sm:text-3xl font-bold font-display emerald-gradient-text" id="stat-dokumentasi">--</div>
+          <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Dokumentasi Foto</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- FILTER WILAYAH RIAU (12 KABUPATEN / KOTA) & SEARCH BAR -->
+  <!-- ========================================================================= -->
+  <section id="wilayah-riau" class="relative z-20 py-8 border-y border-riau-gold/20 bg-gradient-to-b from-riau-dark/90 via-riau-dark/75 to-riau-obsidian/90 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      
+      <!-- Search & Filter Controls Top Bar -->
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/30 mb-2">
+            <span class="w-2 h-2 rounded-full bg-riau-gold animate-pulse"></span>
+            <span>EKSPLORASI 1.850+ DESA • 12 KABUPATEN / KOTA</span>
+          </div>
+          <h2 class="font-royal text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
+            Eksplorasi Wilayah Desa Riau
+          </h2>
+          <div class="flex flex-wrap items-center gap-2 mt-1 text-xs text-gray-400">
+            <span>Filter Aktif:</span>
+            <span id="active-filter-chip" class="px-3 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-500/40 shadow-sm">
+              Semua Wilayah • Semua Kategori
+            </span>
+            <button id="btn-quick-reset" onclick="resetFilters()" class="hidden text-[11px] text-amber-300 hover:text-white underline ml-1 cursor-pointer font-medium">
+              <i class="fa-solid fa-rotate-left text-[10px] mr-1"></i>Reset Filter
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Bar with Live Debounce -->
+        <div class="w-full lg:w-96 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-riau-gold/70 text-xs"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Cari judul, nama desa, inovasi, atau BUMDes..."
+            class="w-full pl-11 pr-10 py-2.5 rounded-xl bg-riau-obsidian/90 border border-riau-gold/30 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-riau-gold focus:ring-1 focus:ring-riau-gold transition-all shadow-inner"
+          >
+          <button id="clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- KABUPATEN CAROUSEL / KINETIC MOVING RIBBON (BERGERAK OTOMATIS & INTERAKTIF) -->
+      <div class="relative group/rail">
+        
+        <!-- Left Navigation Arrow Button -->
+        <button 
+          type="button"
+          onclick="scrollKabupatenRail(-240)" 
+          title="Geser ke kiri"
+          class="hidden sm:flex absolute -left-3.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-riau-obsidian/95 border border-riau-gold/40 text-riau-gold hover:bg-riau-gold hover:text-black shadow-gold-glow items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-md"
+        >
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+
+        <!-- Right Navigation Arrow Button -->
+        <button 
+          type="button"
+          onclick="scrollKabupatenRail(240)" 
+          title="Geser ke kanan"
+          class="hidden sm:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-riau-obsidian/95 border border-riau-gold/40 text-riau-gold hover:bg-riau-gold hover:text-black shadow-gold-glow items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-md"
+        >
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+
+        <!-- Kinetic Auto-Drift Ribbon Container -->
+        <div class="fade-edges px-1">
+          <div 
+            class="flex items-center gap-2.5 overflow-x-auto py-1.5 no-scrollbar select-none cursor-grab active:cursor-grabbing scroll-smooth" 
+            id="kabupaten-filters"
+          >
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KATEGORI CAROUSEL / KINETIC MOVING RIBBON (BERGERAK OTOMATIS & INTERAKTIF) -->
+      <div class="relative group/kat pt-3 pb-1 border-t border-emerald-500/20">
+        
+        <!-- Left Navigation Arrow Button for Category -->
+        <button 
+          type="button"
+          onclick="scrollKategoriRail(-240)" 
+          title="Geser kategori ke kiri"
+          class="flex absolute -left-3.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-riau-obsidian/95 border border-emerald-500/50 text-emerald-400 hover:bg-emerald-500 hover:text-black shadow-emerald-glow items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-md"
+        >
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+
+        <!-- Right Navigation Arrow Button for Category -->
+        <button 
+          type="button"
+          onclick="scrollKategoriRail(240)" 
+          title="Geser kategori ke kanan"
+          class="flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-riau-obsidian/95 border border-emerald-500/50 text-emerald-400 hover:bg-emerald-500 hover:text-black shadow-emerald-glow items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-md"
+        >
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+
+        <!-- Kinetic Auto-Drift Ribbon for Categories with Edge Fades -->
+        <div class="fade-edges px-1">
+          <div 
+            class="flex items-center gap-3 overflow-x-auto py-2 no-scrollbar scroll-smooth select-none cursor-grab active:cursor-grabbing" 
+            id="kategori-filters"
+          >
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- FEED KABAR BERITA DESA -->
+  <!-- ========================================================================= -->
+  <section id="kabar-desa" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex-grow">
+    
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      <div>
+        <div class="text-xs font-semibold text-riau-gold uppercase tracking-widest mb-1">Warta & Inovasi Komunitas</div>
+        <h2 class="font-royal text-2xl sm:text-3xl font-bold text-white">Kabar Berita Terkini</h2>
+      </div>
+      <div class="text-xs text-gray-400 flex items-center gap-2">
+        <span id="active-filter-badge" class="px-3 py-1 rounded-full bg-emerald-950/80 border border-riau-emerald/40 text-emerald-300 font-medium">
+          Semua Wilayah & Kategori
+        </span>
+        <button onclick="refreshData()" class="p-2 rounded-lg bg-riau-card hover:bg-emerald-900/40 text-riau-gold border border-riau-gold/20 transition" title="Muat Ulang">
+          <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- News Grid Container -->
+    <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Loading Skeleton initially -->
+      <div class="glass-card rounded-2xl p-4 animate-pulse h-96"></div>
+      <div class="glass-card rounded-2xl p-4 animate-pulse h-96"></div>
+      <div class="glass-card rounded-2xl p-4 animate-pulse h-96"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-20 px-4">
+      <div class="w-20 h-20 mx-auto rounded-full bg-emerald-950/60 border border-riau-gold/30 flex items-center justify-center text-riau-gold text-3xl mb-4">
+        <i class="fa-solid fa-newspaper"></i>
+      </div>
+      <h3 class="font-royal text-xl text-white font-bold mb-2">Belum Ada Kabar yang Cocok</h3>
+      <p class="text-sm text-gray-400 max-w-md mx-auto mb-6">Coba ganti filter wilayah atau kata kunci pencarian Anda untuk menemukan berita desa lainnya.</p>
+      <button onclick="resetFilters()" class="px-6 py-2.5 rounded-xl bg-riau-gold text-riau-obsidian font-bold text-xs uppercase tracking-wider shadow-gold-glow">
+        Reset Semua Filter
+      </button>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination-container" class="mt-12 flex items-center justify-center gap-3">
+      <!-- Injected by JS -->
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- GALERI DOKUMENTASI KEGIATAN DESA (PHOTO STREAM) -->
+  <!-- ========================================================================= -->
+  <section id="galeri-desa" class="py-16 px-4 sm:px-6 lg:px-8 border-t border-riau-gold/15 bg-riau-dark/40 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto space-y-10">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <div class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-1">Dokumentasi Lapangan</div>
+          <h2 class="font-royal text-2xl sm:text-3xl font-bold text-white">Galeri Potret Kegiatan Desa</h2>
+        </div>
+        <button onclick="openWAModal()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold border border-emerald-500/40 bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-300 transition">
+          <i class="fa-brands fa-whatsapp text-emerald-400"></i> Setor Dokumentasi (WA)
+        </button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Rendered by JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- FOOTER MEWAH DENGAN ORNAMEN MELAYU RIAU -->
+  <!-- ========================================================================= -->
+  <footer class="border-t border-riau-gold/25 bg-riau-obsidian py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      
+      <div class="space-y-4 md:col-span-2">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-riau-emerald to-riau-gold flex items-center justify-center text-riau-obsidian font-bold">
+            <i class="fa-solid fa-sailboat"></i>
+          </div>
+          <span class="font-royal font-bold text-lg gold-gradient-text">LANCANG KUNING DIGITAL</span>
+        </div>
+        <p class="text-xs text-gray-400 leading-relaxed max-w-md">
+          Inisiatif agregator mandiri desa se-Provinsi Riau. Mendorong transparansi, promosi potensi ekonomi pariwisata kelapa sawit, sagu, kerajinan tenun Siak, dan kearifan Melayu secara berkelanjutan berbasis teknologi Google Cloud.
+        </p>
+        <div class="flex items-center gap-3 text-riau-gold text-sm pt-2">
+          <span class="text-xs text-gray-400">12 Kabupaten / Kota Terakomodasi:</span>
+        </div>
+        <p class="text-[11px] text-gray-500 leading-normal">
+          Kampar • Siak • Indragiri Hilir • Bengkalis • Pelalawan • Rokan Hulu • Rokan Hilir • Kuantan Singingi • Indragiri Hulu • Kepulauan Meranti • Kota Dumai • Kota Pekanbaru
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-royal text-sm font-bold text-amber-200 uppercase tracking-wider mb-3">Tautan Navigasi</h4>
+        <ul class="space-y-2 text-xs text-gray-400">
+          <li><a href="#beranda" class="hover:text-riau-gold transition">Beranda Utama</a></li>
+          <li><a href="#kabar-desa" class="hover:text-riau-gold transition">Berita & Warta Komunitas</a></li>
+          <li><a href="#galeri-desa" class="hover:text-riau-gold transition">Potret Dokumentasi Kegiatan</a></li>
+          <li><a href="#wilayah-riau" class="hover:text-riau-gold transition">Peta 12 Kabupaten / Kota</a></li>
+          <li><a href="javascript:void(0)" onclick="contactAdminWA()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1.5"><i class="fa-brands fa-whatsapp"></i> Hubungi Kami (WhatsApp Redaksi)</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-royal text-sm font-bold text-amber-200 uppercase tracking-wider mb-3">Kemitraan & Kontak</h4>
+        <div class="space-y-2 text-xs text-gray-400">
+          <p><i class="fa-brands fa-whatsapp text-emerald-400 mr-2"></i> +62 822-8842-4345 (Admin Redaksi)</p>
+          <p><i class="fa-solid fa-envelope text-riau-gold mr-2"></i> redaksi@portaldesariau.id</p>
+          <p><i class="fa-solid fa-location-dot text-riau-gold mr-2"></i> Pekanbaru, Provinsi Riau, Indonesia</p>
+          <p><i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Didukung Google Apps Script & Sheets</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+      <div>© 2026 Portal Agregator Desa Se-Provinsi Riau. Bersatu Memajukan Negeri.</div>
+      <div class="flex items-center gap-4 text-gray-400">
+        <span onclick="contactAdminWA()" class="hover:text-riau-gold cursor-pointer flex items-center gap-1"><i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp: 0822-8842-4345</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: BACA ARTIKEL DETAIL (READER MODAL MEWAH & LENGKAP) -->
+  <!-- ========================================================================= -->
+  <div id="read-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/90 backdrop-blur-xl p-3 sm:p-6 lg:p-8 flex items-center justify-center">
+    <div class="relative w-full max-w-4xl glass-panel rounded-3xl border border-riau-gold/40 shadow-2xl overflow-hidden my-6 transform transition-all duration-300 scale-95 opacity-0 flex flex-col max-h-[90vh]" id="read-modal-card">
+      
+      <!-- Sticky Modal Top Header Bar -->
+      <div class="p-4 sm:px-6 py-3.5 border-b border-white/10 bg-riau-dark/95 backdrop-blur-md flex items-center justify-between z-30 sticky top-0">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-semibold text-amber-200 uppercase tracking-wider font-royal">
+            Portal Warta Desa Se-Provinsi Riau
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="shareArticle('wa')" title="Bagikan ke WhatsApp" class="px-3 py-1.5 rounded-xl bg-emerald-950 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition">
+            <i class="fa-brands fa-whatsapp text-sm"></i> <span class="hidden sm:inline">Bagikan</span>
+          </button>
+          <button onclick="shareArticle('copy')" title="Salin Link Berita" class="px-3 py-1.5 rounded-xl bg-amber-950/80 hover:bg-amber-900 border border-amber-500/40 text-amber-200 text-xs font-semibold flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-link text-xs"></i> <span class="hidden sm:inline">Salin Link</span>
+          </button>
+          <button onclick="closeReadModal()" title="Tutup Modal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center transition ml-1">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Article Content -->
+      <div class="overflow-y-auto custom-scrollbar flex-grow">
+        
+        <!-- Big Thumbnail Cover Hero -->
+        <div class="relative h-64 sm:h-96 w-full overflow-hidden bg-emerald-950">
+          <img id="read-modal-img" src="" alt="Cover Berita" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-riau-dark via-riau-dark/50 to-transparent"></div>
+          
+          <!-- Badges Overlay on Cover -->
+          <div class="absolute bottom-5 left-6 right-6 space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="read-modal-category" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-black uppercase tracking-wider shadow-md"></span>
+              <span id="read-modal-kabupaten" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-900/90 text-emerald-200 border border-emerald-500/30 backdrop-blur-md"></span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[10px]"></i> Terverifikasi Redaksi
+              </span>
+            </div>
+            <h1 id="read-modal-title" class="font-royal text-xl sm:text-3xl font-extrabold text-white leading-snug drop-shadow-md"></h1>
+          </div>
+        </div>
+
+        <!-- Meta Bar & Info Bar -->
+        <div class="p-6 sm:p-8 space-y-6 bg-riau-dark/95">
+          
+          <!-- Author & Location Details Pill -->
+          <div class="p-4 rounded-2xl bg-riau-obsidian/80 border border-riau-gold/20 flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-emerald-600 p-0.5 flex items-center justify-center">
+                <div class="w-full h-full bg-riau-obsidian rounded-full flex items-center justify-center text-amber-300">
+                  <i class="fa-solid fa-user-pen"></i>
+                </div>
+              </div>
+              <div>
+                <div class="text-gray-400 text-[10px] uppercase font-semibold">Disunting & Diterbitkan Oleh:</div>
+                <div class="font-bold text-white text-xs sm:text-sm" id="read-modal-author">Tim Redaksi Lancang Kuning</div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-gray-300">
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-riau-gold"></i>
+                <span id="read-modal-desa" class="font-medium text-emerald-300"></span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <i class="fa-regular fa-calendar text-amber-400"></i>
+                <span id="read-modal-date" class="font-mono"></span>
+              </div>
+              <div class="flex items-center gap-1.5 text-gray-400 font-mono text-[11px]">
+                <span>ID:</span>
+                <span id="read-modal-id" class="text-gray-300"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlight Box -->
+          <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/25 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex-shrink-0 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div class="text-xs text-emerald-200/90 leading-relaxed">
+              <strong>Kilas Warta:</strong> Berita ini merupakan liputan inisiatif pemberdayaan dan kemajuan masyarakat desa di Bumi Lancang Kuning Provinsi Riau.
+            </div>
+          </div>
+
+          <!-- Full Content Body -->
+          <div id="read-modal-content" class="text-gray-200 text-sm sm:text-base leading-relaxed space-y-4 font-light">
+            <!-- Formatted Paragraphs Rendered by JS -->
+          </div>
+
+          <!-- Article Share & Action Box -->
+          <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-white">Bagikan Warta Ini:</div>
+              <div class="text-[11px] text-gray-400">Sebarkan inspirasi dan potensi desa ke seluruh masyarakat Riau.</div>
+            </div>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              <button onclick="shareArticle('wa')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 text-white font-bold text-xs uppercase tracking-wider shadow-emerald-glow hover:brightness-110 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-brands fa-whatsapp text-base"></i> Bagikan ke WhatsApp
+              </button>
+              <button onclick="shareArticle('copy')" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-riau-gold/40 bg-riau-obsidian/80 hover:bg-riau-gold hover:text-black text-amber-200 font-semibold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-link text-xs"></i> Salin Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Footer of Modal -->
+          <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-500">
+            <span>Portal Desa Se-Provinsi Riau</span>
+            <button onclick="closeReadModal()" class="text-riau-gold hover:underline cursor-pointer flex items-center gap-1">
+              <i class="fa-solid fa-arrow-left text-[10px]"></i> Tutup dan Kembali ke Beranda
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: SETOR WARTA & DOKUMENTASI DESA VIA WHATSAPP REDAKSI -->
+  <!-- ========================================================================= -->
+  <div id="wa-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/85 backdrop-blur-md p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+    <div class="relative w-full max-w-xl glass-panel rounded-3xl border border-emerald-500/30 shadow-2xl overflow-hidden my-8 transform transition-all duration-300 scale-95 opacity-0" id="wa-modal-card">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-emerald-500/20 bg-gradient-to-r from-emerald-950/90 via-riau-dark to-riau-obsidian flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl shadow-emerald-glow">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <div>
+            <h3 class="font-royal text-lg font-bold text-white leading-tight">
+              Hubungi Kami
+            </h3>
+            <p class="text-xs text-emerald-300 mt-0.5">Layanan Informasi & Kontak Redaksi Portal Desa Riau</p>
+          </div>
+        </div>
+        <button onclick="closeWAModal()" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Content Body -->
+      <div class="p-6 space-y-5 bg-riau-dark/95 text-xs text-gray-300">
+        
+        <!-- SOP Callout -->
+        <div class="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 space-y-1.5 text-gray-300">
+          <div class="font-bold text-emerald-300 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-riau-gold"></i>
+            Prosedur Resmi Pengiriman Berita Desa:
+          </div>
+          <p class="leading-relaxed text-[11px] text-gray-300">
+            Aparatur desa atau perwakilan masyarakat dapat menyetorkan bahan rilis berita, inovasi BUMDes, atau dokumentasi kegiatan desa langsung ke WhatsApp Redaksi. Admin redaksi akan memverifikasi, merapikan narasi, dan menerbitkannya ke portal publik.
+          </p>
+        </div>
+
+        <!-- Hotline Contact Info -->
+        <div class="p-3.5 rounded-xl bg-riau-obsidian/80 border border-white/10 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-gray-400 block uppercase font-semibold">Nomor WhatsApp Redaksi:</span>
+            <span class="text-sm font-bold text-amber-300 font-mono tracking-wider">+62 822-8300-1850</span>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Online 24 Jam
+          </span>
+        </div>
+
+        <!-- Quick Form Generator for WA message -->
+        <div class="space-y-3 pt-1">
+          <div class="font-bold text-white text-xs uppercase tracking-wider">
+            Format Pesan Cepat:
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-400 mb-1">Nama Desa & Kecamatan *</label>
+              <input type="text" id="wa-desa" placeholder="Misal: Desa Muara Takus, XIII Koto Kampar" class="w-full px-3.5 py-2 rounded-xl bg-riau-obsidian border border-white/10 text-xs text-white focus:border-emerald-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-400 mb-1">Kabupaten / Kota *</label>
+              <select id="wa-kabupaten" class="w-full px-3.5 py-2 rounded-xl bg-riau-obsidian border border-white/10 text-xs text-white focus:border-emerald-500 focus:outline-none">
+                <!-- Populated by JS -->
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-400 mb-1">Judul Kabar / Kegiatan *</label>
+            <input type="text" id="wa-judul" placeholder="Misal: Panen Raya Sagu dan Pelatihan UMKM Olahan Desa" class="w-full px-3.5 py-2 rounded-xl bg-riau-obsidian border border-white/10 text-xs text-white focus:border-emerald-500 focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-400 mb-1">Nama Penyetor / Jabatan</label>
+            <input type="text" id="wa-penyetor" placeholder="Misal: Budi Santoso (Sekretaris Desa / Karang Taruna)" class="w-full px-3.5 py-2 rounded-xl bg-riau-obsidian border border-white/10 text-xs text-white focus:border-emerald-500 focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-400 mb-1">Ringkasan Kegiatan / Warta</label>
+            <textarea id="wa-ringkasan" rows="3" placeholder="Tuliskan ringkasan singkat kegiatan yang ingin diliput..." class="w-full px-3.5 py-2 rounded-xl bg-riau-obsidian border border-white/10 text-xs text-white focus:border-emerald-500 focus:outline-none resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-amber-200/80 bg-amber-950/30 p-2.5 rounded-xl border border-amber-500/20 flex items-start gap-2">
+          <i class="fa-solid fa-camera text-riau-gold mt-0.5"></i>
+          <span><strong>Tips:</strong> Lampirkan foto dokumentasi kegiatan beresolusi jelas langsung di chat WhatsApp setelah mengirim format pesan.</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-end gap-2.5">
+          <button type="button" onclick="copyWATemplate()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-white/10 bg-riau-obsidian text-gray-300 hover:text-white transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-copy"></i> Salin Format
+          </button>
+          <button type="button" onclick="sendToWhatsApp()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 text-white shadow-emerald-glow hover:brightness-110 active:scale-95 transition flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Buka WhatsApp Redaksi
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- LIGHTBOX MODAL: FULL RESOLUTION IMAGE PREVIEW -->
+  <!-- ========================================================================= -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-lg p-4 flex flex-col items-center justify-center" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-white text-2xl hover:text-riau-gold transition">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-4xl max-h-[80vh] flex flex-col items-center" onclick="event.stopPropagation()">
+      <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-[70vh] rounded-xl object-contain shadow-2xl border border-white/10">
+      <div class="mt-4 text-center">
+        <h4 id="lightbox-title" class="text-white font-bold text-lg"></h4>
+        <p id="lightbox-subtitle" class="text-xs text-riau-gold mt-1"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT CONTROLLER (THREE.JS, GSAP, MOCK ENGINE & GAS ADAPTER) -->
+  <!-- ========================================================================= -->
+  <script>
+    /**
+     * STATE MANAGEMENT
+     */
+    const STATE = {
+      isGAS: typeof google !== 'undefined' && typeof google.script !== 'undefined',
+      activeKabupaten: 'Semua',
+      activeKategori: 'Semua',
+      searchQuery: '',
+      currentPage: 1,
+      postsPerPage: 6,
+      categories: [
+        { nama: "Pemberdayaan Ekonomi", icon: "fa-solid fa-coins" },
+        { nama: "Pariwisata & Budaya", icon: "fa-solid fa-landmark" },
+        { nama: "Infrastruktur & Digital", icon: "fa-solid fa-network-wired" },
+        { nama: "Pertanian & Perkebunan", icon: "fa-solid fa-seedling" },
+        { nama: "Sosial & Tradisi", icon: "fa-solid fa-users" },
+        { nama: "Kesehatan & Lingkungan", icon: "fa-solid fa-heartbeat" }
+      ],
+      kabupatenList: [
+        "Semua",
+        "Kampar",
+        "Siak",
+        "Indragiri Hilir",
+        "Bengkalis",
+        "Pelalawan",
+        "Rokan Hulu",
+        "Rokan Hilir",
+        "Kuantan Singingi",
+        "Indragiri Hulu",
+        "Kepulauan Meranti",
+        "Kota Dumai",
+        "Kota Pekanbaru"
+      ],
+      // Local Mock DB untuk testing preview di browser lokal tanpa deploy GAS (Terbaru di atas)
+      mockPosts: [
+        {
+          id: "BRT-2026-006",
+          judul: "Melestarikan Tradisi Pacu Jalur: Semangat Gotong Royong Warga Kenegerian Kari Kuansing",
+          slug: "melestarikan-tradisi-pacu-jalur-kenegerian-kari",
+          kategori: "Sosial & Tradisi",
+          desa: "Desa Pintu Gobang Kari",
+          kabupaten_kota: "Kuantan Singingi",
+          konten: "Ratusan warga Desa Pintu Gobang Kari tumpah ruah menggelar prosesi 'Maelo Jalur' dari dalam rimba larangan.\n\nTradisi gotong royong menarik kayu perahu pacu sepanjang 30 meter ini mencerminkan kekompakan dan keluhuran falsafah hidup masyarakat Melayu Kuantan Singingi yang tetap teguh di era modern.",
+          thumbnail_url: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-05",
+          updated_at: "2026-10-05T10:00:00.000Z",
+          status: "Published"
+        },
+        {
+          id: "BRT-2026-005",
+          judul: "Pembangunan Jembatan Gantung Desa Rambah Utama Hubungkan Sentra Pangan Kering Rokan Hulu",
+          slug: "pembangunan-jembatan-gantung-desa-rambah-utama",
+          kategori: "Infrastruktur & Digital",
+          desa: "Desa Rambah Utama",
+          kabupaten_kota: "Rokan Hulu",
+          konten: "Akses perekonomian masyarakat Desa Rambah Utama kini semakin terbuka lebar setelah selesainya pembangunan jembatan gantung antar-dusun.\n\nSebelumnya warga harus memutar sejauh 18 kilometer melintasi jalur perkebunan untuk menjual hasil panen ke pasar induk Pasir Pengaraian.",
+          thumbnail_url: "https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-04",
+          updated_at: "2026-10-04T15:30:00.000Z",
+          status: "Published"
+        },
+        {
+          id: "BRT-2026-004",
+          judul: "Inovasi Hilirisasi Kelapa Rakyat Desa Sungai Guntung Tembus Industri Farmasi & Kosmetik",
+          slug: "inovasi-hilirisasi-kelapa-rakyat-sungai-guntung",
+          kategori: "Pertanian & Perkebunan",
+          desa: "Desa Sungai Guntung",
+          kabupaten_kota: "Indragiri Hilir",
+          konten: "Indragiri Hilir yang tersohor sebagai 'Negeri Hamparan Kelapa Dunia' menunjukkan terobosan di Desa Sungai Guntung.\n\nPetani kelapa tidak lagi sekadar menjual kopra mentah, melainkan memproduksi Virgin Coconut Oil (VCO) kualitas farmasi dan serat sabut ramah lingkungan yang diekspor ke Eropa.",
+          thumbnail_url: "https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-04",
+          updated_at: "2026-10-04T09:15:00.000Z",
+          status: "Published"
+        },
+        {
+          id: "BRT-2026-003",
+          judul: "Semarak Festival Gelombang Bono di Teluk Meranti: Pesta Adat dan Selancar Sungai Dunia",
+          slug: "semarak-festival-gelombang-bono-teluk-meranti",
+          kategori: "Pariwisata & Budaya",
+          desa: "Desa Teluk Meranti",
+          kabupaten_kota: "Pelalawan",
+          konten: "Fenomena ombak pasang sungai terkenal dunia 'Gelombang Bono' di Sungai Kampar kembali menyedot ribuan peselancar lokal dan mancanegara.\n\nPemerintah Desa Teluk Meranti menggelar parade perahu hias Melayu dan pasar kuliner sagu yang melibatkan 60 pelaku UMKM lokal, memperkuat perekonomian berbasis kebudayaan sungai.",
+          thumbnail_url: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-03",
+          updated_at: "2026-10-03T11:00:00.000Z",
+          status: "Published"
+        },
+        {
+          id: "BRT-2026-002",
+          judul: "Ekowisata Hutan Mangrove Desa Siak Kecil Raih Penghargaan Desa Berkelanjutan Nasional",
+          slug: "ekowisata-hutan-mangrove-desa-siak-kecil",
+          kategori: "Pariwisata & Budaya",
+          desa: "Desa Tanjung Belit",
+          kabupaten_kota: "Bengkalis",
+          konten: "Masyarakat Desa Tanjung Belit, Kecamatan Siak Kecil, berhasil membuktikan komitmen menjaga pesisir Riau. Konservasi mangrove seluas 120 hektare yang dikelola secara swadaya kini menjadi destinasi edukasi internasional.\n\nPenghargaan diserahkan langsung atas keberhasilan memadukan perlindungan ekosistem gambut pesisir dengan ekowisata berbasis komunitas.",
+          thumbnail_url: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-02",
+          updated_at: "2026-10-02T08:00:00.000Z",
+          status: "Published"
+        },
+        {
+          id: "BRT-2026-001",
+          judul: "Transformasi Digital Desa Muara Takus: BUMDes Pasarkan Keripik Nanas Hingga Mancanegara",
+          slug: "transformasi-digital-desa-muara-takus",
+          kategori: "Pemberdayaan Ekonomi",
+          desa: "Desa Muara Takus",
+          kabupaten_kota: "Kampar",
+          konten: "Desa Muara Takus di Kecamatan XIII Koto Kampar mencatatkan sejarah baru. Melalui digitalisasi koperasi BUMDes Mandiri dan integrasi lokapasar nasional, produk olahan nanas khas Muara Takus kini menembus pasar ritel modern dan ekspor regional.\n\nKepala Desa menyampaikan bahwa pendapatan pemuda desa meningkat 45% berkat pelatihan pemasaran digital berbasis website desa.",
+          thumbnail_url: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=80",
+          tanggal: "2026-10-01",
+          updated_at: "2026-10-01T14:20:00.000Z",
+          status: "Published"
+        }
+      ],
+      mockGallery: [
+        {
+          id: "DOC-006",
+          judul_kegiatan: "Patroli Drone Masyarakat Peduli Api",
+          lokasi_desa: "Desa Rimbo Panjang, Kampar",
+          foto_url: "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Monitoring suhu lahan gambut untuk pencegahan kebakaran hutan.",
+          tanggal: "2026-10-05",
+          updated_at: "2026-10-05T10:00:00.000Z"
+        },
+        {
+          id: "DOC-005",
+          judul_kegiatan: "Panen Padi Pasang Surut Berkelanjutan",
+          lokasi_desa: "Desa Kuala Enok, Indragiri Hilir",
+          foto_url: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Hasil panen padi organik melimpah di areal pasang surut.",
+          tanggal: "2026-10-04",
+          updated_at: "2026-10-04T12:00:00.000Z"
+        },
+        {
+          id: "DOC-004",
+          judul_kegiatan: "Pentas Seni Zapin Generasi Muda",
+          lokasi_desa: "Desa Meskom, Bengkalis",
+          foto_url: "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Pementasan tari tradisi Melayu pesisir Selat Melaka.",
+          tanggal: "2026-10-03",
+          updated_at: "2026-10-03T16:00:00.000Z"
+        },
+        {
+          id: "DOC-003",
+          judul_kegiatan: "Pemeriksaan Nutrisi & Cegah Stunting",
+          lokasi_desa: "Desa Kuok, Kampar",
+          foto_url: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Pemberian makanan tambahan balita di posyandu terpadu.",
+          tanggal: "2026-10-03",
+          updated_at: "2026-10-03T09:00:00.000Z"
+        },
+        {
+          id: "DOC-002",
+          judul_kegiatan: "Gotong Royong Penghijauan Tepian Sungai",
+          lokasi_desa: "Desa Mempura, Siak",
+          foto_url: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Penanaman pohon ketapang dan pembersihan aliran air desa.",
+          tanggal: "2026-10-02",
+          updated_at: "2026-10-02T08:00:00.000Z"
+        },
+        {
+          id: "DOC-001",
+          judul_kegiatan: "Pelatihan Akuntansi BUMDes Mandiri",
+          lokasi_desa: "Desa Dayun, Siak",
+          foto_url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80",
+          deskripsi: "Workshop tata kelola kas digital bersama puluhan aparat desa.",
+          tanggal: "2026-10-01",
+          updated_at: "2026-10-01T10:00:00.000Z"
+        }
+      ]
+    };
+
+    /**
+     * =========================================================================
+     * THREE.JS: 3D HOLOGRAPHIC SMART VILLAGE CONSTELLATION GLOBE & GYRO RINGS
+     * Arsitektur Visual 3D Hologram Mewah Lancang Kuning (Bumi Melayu Riau)
+     * =========================================================================
+     */
+    function initThreeHero() {
+      const container = document.getElementById('hero-canvas-container');
+      if (!container) return;
+
+      // 1. Scene, Camera, Renderer
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.set(0, 0, 56);
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Root Group containing all 3D components for synchronized tilt & rotation
+      const globeGroup = new THREE.Group();
+      scene.add(globeGroup);
+
+      // Helper function: Generate soft radial glow particle sprite
+      function createGlowTexture(colorHex = '#fbbf24') {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grad.addColorStop(0, colorHex);
+        grad.addColorStop(0.25, colorHex);
+        grad.addColorStop(0.55, 'rgba(245, 158, 11, 0.45)');
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(32, 32, 30, 0, Math.PI * 2);
+        ctx.fill();
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      const goldDotTexture = createGlowTexture('#fbbf24');
+      const emeraldDotTexture = createGlowTexture('#10b981');
+
+      // 2. Village Network Nodes on Sphere (Fibonacci distribution for perfect harmony)
+      const nodeCount = 135;
+      const sphereRadius = 22;
+      const nodePositions = [];
+      const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+      for (let i = 0; i < nodeCount; i++) {
+        const theta = 2 * Math.PI * i / goldenRatio;
+        const phi = Math.acos(1 - 2 * (i + 0.5) / nodeCount);
+        const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
+        const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
+        const z = sphereRadius * Math.cos(phi);
+        nodePositions.push(new THREE.Vector3(x, y, z));
+      }
+
+      // Constellation Network Lines (Connect nearby village nodes)
+      const linePositions = [];
+      const lineColors = [];
+      const maxConnectDist = 7.4;
+
+      for (let i = 0; i < nodeCount; i++) {
+        for (let j = i + 1; j < nodeCount; j++) {
+          const dist = nodePositions[i].distanceTo(nodePositions[j]);
+          if (dist < maxConnectDist) {
+            linePositions.push(nodePositions[i].x, nodePositions[i].y, nodePositions[i].z);
+            linePositions.push(nodePositions[j].x, nodePositions[j].y, nodePositions[j].z);
+            
+            // Subtle gradient colors: Emerald to Gold
+            const isGold = (i + j) % 2 === 0;
+            const r = isGold ? 0.96 : 0.05;
+            const g = isGold ? 0.65 : 0.72;
+            const b = isGold ? 0.12 : 0.52;
+            lineColors.push(r, g, b, r, g, b);
+          }
+        }
+      }
+
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+      lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+      const lineMat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.35,
+        blending: THREE.AdditiveBlending
+      });
+      const networkLines = new THREE.LineSegments(lineGeo, lineMat);
+      globeGroup.add(networkLines);
+
+      // Glowing Node Points (Village Hubs)
+      const nodeGeo = new THREE.BufferGeometry().setFromPoints(nodePositions);
+      const nodeMat = new THREE.PointsMaterial({
+        size: 3.2,
+        map: goldDotTexture,
+        transparent: true,
+        opacity: 0.92,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const nodes = new THREE.Points(nodeGeo, nodeMat);
+      globeGroup.add(nodes);
+
+      // 3. Inner Crystalline Icosahedron Lattice (Simbol Kemakmuran Lancang Kuning)
+      const icosaGeo = new THREE.IcosahedronGeometry(15, 1);
+      const icosaMat = new THREE.MeshBasicMaterial({
+        color: 0x059669,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.22,
+        blending: THREE.AdditiveBlending
+      });
+      const innerLattice = new THREE.Mesh(icosaGeo, icosaMat);
+      globeGroup.add(innerLattice);
+
+      // 4. Double Orbital Gyroscopic Rings (Luminous Golden & Emerald Rings)
+      // Ring 1: Royal Gold
+      const ring1Geo = new THREE.TorusGeometry(30, 0.18, 16, 120);
+      const ring1Mat = new THREE.MeshBasicMaterial({
+        color: 0xf59e0b,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      const orbitalRing1 = new THREE.Mesh(ring1Geo, ring1Mat);
+      orbitalRing1.rotation.x = Math.PI / 3;
+      orbitalRing1.rotation.y = Math.PI / 7;
+      globeGroup.add(orbitalRing1);
+
+      // Ring 2: Emerald Mint
+      const ring2Geo = new THREE.TorusGeometry(35, 0.14, 16, 120);
+      const ring2Mat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        transparent: true,
+        opacity: 0.45,
+        blending: THREE.AdditiveBlending
+      });
+      const orbitalRing2 = new THREE.Mesh(ring2Geo, ring2Mat);
+      orbitalRing2.rotation.x = -Math.PI / 3.5;
+      orbitalRing2.rotation.z = Math.PI / 4.5;
+      globeGroup.add(orbitalRing2);
+
+      // Orbiting Satellite Beacons on the rings
+      const beaconGeo = new THREE.BufferGeometry();
+      beaconGeo.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0], 3));
+      const beaconMat1 = new THREE.PointsMaterial({
+        size: 6.0,
+        map: goldDotTexture,
+        transparent: true,
+        opacity: 0.95,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const beacon1 = new THREE.Points(beaconGeo, beaconMat1);
+      orbitalRing1.add(beacon1);
+
+      const beaconMat2 = new THREE.PointsMaterial({
+        size: 5.2,
+        map: emeraldDotTexture,
+        transparent: true,
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const beacon2 = new THREE.Points(beaconGeo, beaconMat2);
+      orbitalRing2.add(beacon2);
+
+      // 5. Floating Golden Dust & Fireflies ("Kunang-kunang Emas Riau")
+      const dustCount = 220;
+      const dustPositions = new Float32Array(dustCount * 3);
+      const dustVelocities = [];
+
+      for (let i = 0; i < dustCount; i++) {
+        dustPositions[i * 3] = (Math.random() - 0.5) * 120;
+        dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 80;
+        dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+        dustVelocities.push({
+          y: 0.04 + Math.random() * 0.05,
+          speed: 0.01 + Math.random() * 0.02,
+          offset: Math.random() * Math.PI * 2
+        });
+      }
+
+      const dustGeo = new THREE.BufferGeometry();
+      dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+      const dustMat = new THREE.PointsMaterial({
+        size: 2.2,
+        map: goldDotTexture,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const dustParticles = new THREE.Points(dustGeo, dustMat);
+      scene.add(dustParticles);
+
+      // 6. Lighting
+      const centerLight = new THREE.PointLight(0xf59e0b, 2.5, 90);
+      centerLight.position.set(0, 0, 0);
+      globeGroup.add(centerLight);
+
+      const ambientLight = new THREE.AmbientLight(0x022c22, 1.5);
+      scene.add(ambientLight);
+
+      // 7. Mouse Interactivity with Damped Parallax
+      let mouseX = 0, mouseY = 0;
+      let targetX = 0, targetY = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2);
+        mouseY = (e.clientY - window.innerHeight / 2);
+      });
+
+      // 8. Animation Loop
+      let time = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.015;
+
+        // Inertial self-rotation
+        globeGroup.rotation.y += 0.0028;
+        innerLattice.rotation.y -= 0.002;
+        innerLattice.rotation.x += 0.001;
+
+        // Counter-rotations of orbital rings
+        orbitalRing1.rotation.z += 0.007;
+        orbitalRing2.rotation.z -= 0.005;
+
+        // Move satellite beacons along the rings
+        beacon1.position.set(30 * Math.cos(time * 1.5), 30 * Math.sin(time * 1.5), 0);
+        beacon2.position.set(35 * Math.cos(-time * 1.2), 35 * Math.sin(-time * 1.2), 0);
+
+        // Gentle floating of fireflies / dust
+        const dPos = dustGeo.attributes.position.array;
+        for (let i = 0; i < dustCount; i++) {
+          const idx = i * 3;
+          dPos[idx + 1] += dustVelocities[i].y;
+          dPos[idx] += Math.sin(time + dustVelocities[i].offset) * 0.04;
+          // Wrap around if too high
+          if (dPos[idx + 1] > 45) {
+            dPos[idx + 1] = -45;
+          }
+        }
+        dustGeo.attributes.position.needsUpdate = true;
+
+        // Mouse Parallax Damping
+        targetX += (mouseX * 0.0006 - targetX) * 0.05;
+        targetY += (mouseY * 0.0006 - targetY) * 0.05;
+
+        globeGroup.rotation.x = targetY + 0.15;
+        globeGroup.rotation.z = -targetX * 0.5;
+
+        camera.position.x += (mouseX * 0.012 - camera.position.x) * 0.04;
+        camera.position.y += (-mouseY * 0.012 - camera.position.y) * 0.04;
+        camera.lookAt(0, 0, 0);
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Responsive Resize
+      window.addEventListener('resize', () => {
+        if (!container) return;
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    }
+
+    /**
+     * =========================================================================
+     * INITIALIZATION & EVENT LISTENERS
+     * =========================================================================
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      initThreeHero();
+      renderKabupatenFilters();
+      renderKategoriFilters();
+      initKabupatenAutoDrift();
+      initKategoriAutoDrift();
+      populateDropdowns();
+      fetchStats();
+      fetchPosts();
+      fetchGallery();
+      setupSearchDebounce();
+
+      // Sinkronisasi realtime otomatis saat ada perubahan dari Panel Admin
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'portal_desa_shared_posts' || e.key === 'portal_desa_shared_gallery') {
+          fetchStats();
+          fetchPosts();
+          fetchGallery();
+        }
+      });
+
+      // Penyesuaian link Admin saat berjalan di Google Apps Script Web App
+      if (STATE.isGAS) {
+        document.querySelectorAll('a[href="Admin.html"]').forEach(a => {
+          a.setAttribute('href', '?page=admin');
+        });
+      }
+
+      // Mobile Menu Toggle
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
+
+    /**
+     * Populates Kabupaten and Category dropdowns for Forms
+     */
+    function populateDropdowns() {
+      const selectKab = document.getElementById('berita-kabupaten');
+      if (selectKab) {
+        selectKab.innerHTML = STATE.kabupatenList
+          .filter(k => k !== 'Semua')
+          .map(k => `<option value="${k}">${k}</option>`)
+          .join('');
+      }
+
+      const selectWaKab = document.getElementById('wa-kabupaten');
+      if (selectWaKab) {
+        selectWaKab.innerHTML = STATE.kabupatenList
+          .filter(k => k !== 'Semua')
+          .map(k => `<option value="${k}">${k}</option>`)
+          .join('');
+      }
+
+      const selectKat = document.getElementById('berita-kategori');
+      if (selectKat) {
+        selectKat.innerHTML = STATE.categories
+          .map(c => `<option value="${c.nama}">${c.nama}</option>`)
+          .join('');
+      }
+    }
+
+    /**
+     * Render Kabupaten Filter Badges (Moving Ribbon Style - Infinite Conveyor)
+     */
+    function renderKabupatenFilters() {
+      const container = document.getElementById('kabupaten-filters');
+      if (!container) return;
+
+      const renderKabItem = (kab) => {
+        const isActive = STATE.activeKabupaten === kab;
+        const activeClass = isActive 
+          ? 'bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-riau-obsidian font-bold shadow-gold-glow border-riau-gold scale-105 active-pill-glow'
+          : 'bg-emerald-950/50 text-gray-300 hover:text-white border-white/10 hover:border-riau-gold/50 hover:bg-emerald-900/60';
+        return `
+          <button 
+            type="button"
+            onclick="setKabupatenFilter('${kab}')" 
+            class="px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all duration-300 border ${activeClass} flex items-center gap-2 group flex-shrink-0 cursor-pointer shadow-sm hover:scale-105 select-none"
+          >
+            <span class="w-2 h-2 rounded-full ${isActive ? 'bg-riau-obsidian' : 'bg-riau-gold'} transition-transform group-hover:scale-125"></span>
+            <span>${kab}</span>
+          </button>
+        `;
+      };
+
+      // 2 set duplikat untuk infinite seamless conveyor drift
+      container.innerHTML = STATE.kabupatenList.map(renderKabItem).join('') + STATE.kabupatenList.map(renderKabItem).join('');
+    }
+
+    /**
+     * KINETIC AUTO-DRIFT CAROUSEL ENGINE UNTUK KABUPATEN
+     */
+    let isRailHovered = false;
+    let autoDriftInterval = null;
+
+    function initKabupatenAutoDrift() {
+      const rail = document.getElementById('kabupaten-filters');
+      if (!rail) return;
+
+      rail.addEventListener('mouseenter', () => { isRailHovered = true; });
+      rail.addEventListener('mouseleave', () => { isRailHovered = false; });
+      rail.addEventListener('touchstart', () => { isRailHovered = true; }, { passive: true });
+      rail.addEventListener('touchend', () => { 
+        setTimeout(() => { isRailHovered = false; }, 2000); 
+      }, { passive: true });
+
+      if (autoDriftInterval) clearInterval(autoDriftInterval);
+
+      // Smooth horizontal drift
+      autoDriftInterval = setInterval(() => {
+        if (isRailHovered) return;
+        rail.scrollLeft += 0.55;
+        const halfWidth = rail.scrollWidth / 2;
+        if (halfWidth > 0 && rail.scrollLeft >= halfWidth) {
+          rail.scrollLeft -= halfWidth;
+        }
+      }, 30);
+    }
+
+    function scrollKabupatenRail(offset) {
+      const rail = document.getElementById('kabupaten-filters');
+      if (!rail) return;
+      isRailHovered = true;
+      rail.scrollBy({ left: offset, behavior: 'smooth' });
+      setTimeout(() => { isRailHovered = false; }, 3500);
+    }
+
+    /**
+     * KINETIC AUTO-DRIFT UNTUK KATEGORI (BERGERAK OTOMATIS & MEWAH)
+     */
+    let isKatRailHovered = false;
+    let autoDriftKatInterval = null;
+
+    function initKategoriAutoDrift() {
+      const rail = document.getElementById('kategori-filters');
+      if (!rail) return;
+
+      rail.addEventListener('mouseenter', () => { isKatRailHovered = true; });
+      rail.addEventListener('mouseleave', () => { isKatRailHovered = false; });
+      rail.addEventListener('touchstart', () => { isKatRailHovered = true; }, { passive: true });
+      rail.addEventListener('touchend', () => { 
+        setTimeout(() => { isKatRailHovered = false; }, 2000); 
+      }, { passive: true });
+
+      if (autoDriftKatInterval) clearInterval(autoDriftKatInterval);
+
+      // Smooth horizontal drift
+      autoDriftKatInterval = setInterval(() => {
+        if (isKatRailHovered) return;
+        rail.scrollLeft += 0.55;
+        const halfWidth = rail.scrollWidth / 2;
+        if (halfWidth > 0 && rail.scrollLeft >= halfWidth) {
+          rail.scrollLeft -= halfWidth;
+        }
+      }, 28);
+    }
+
+    function scrollKategoriRail(offset) {
+      const rail = document.getElementById('kategori-filters');
+      if (!rail) return;
+      isKatRailHovered = true;
+      rail.scrollBy({ left: offset, behavior: 'smooth' });
+      setTimeout(() => { isKatRailHovered = false; }, 3500);
+    }
+
+    /**
+     * Render Category Filter Pills (Mewah, Bercahaya & Bergerak Otomatis)
+     */
+    function renderKategoriFilters() {
+      const container = document.getElementById('kategori-filters');
+      if (!container) return;
+
+      const cats = [
+        { nama: "Semua", label: "Semua Kategori", icon: "fa-solid fa-layer-group" },
+        ...STATE.categories
+      ];
+
+      const renderKatItem = (cat) => {
+        const isActive = STATE.activeKategori === cat.nama;
+        const activeClass = isActive 
+          ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white font-bold border-emerald-300 shadow-emerald-glow scale-105 active-pill-glow' 
+          : 'bg-emerald-950/60 backdrop-blur-md text-emerald-200/90 border-emerald-500/25 hover:border-emerald-400 hover:text-white hover:bg-emerald-900/60 shadow-sm';
+
+        return `
+          <button 
+            type="button"
+            onclick="setKategoriFilter('${cat.nama}')" 
+            class="px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all duration-300 border ${activeClass} flex items-center gap-2.5 group flex-shrink-0 cursor-pointer shadow-sm hover:scale-105 select-none"
+          >
+            <span class="w-6 h-6 rounded-full flex items-center justify-center ${isActive ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'} transition-transform group-hover:rotate-12 text-[11px]">
+              <i class="${cat.icon}"></i>
+            </span>
+            <span class="font-medium tracking-wide">${cat.label || cat.nama}</span>
+            <span class="w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white animate-pulse' : 'bg-emerald-400/60'}"></span>
+          </button>
+        `;
+      };
+
+      // 2 set duplikat untuk infinite seamless conveyor drift di semua ukuran layar
+      container.innerHTML = cats.map(renderKatItem).join('') + cats.map(renderKatItem).join('');
+    }
+
+    /**
+     * Handle Filter Click
+     */
+    function setKabupatenFilter(kab) {
+      STATE.activeKabupaten = kab;
+      STATE.currentPage = 1;
+      renderKabupatenFilters();
+      updateActiveBadge();
+      fetchPosts();
+    }
+
+    function setKategoriFilter(kat) {
+      STATE.activeKategori = kat;
+      STATE.currentPage = 1;
+      renderKategoriFilters();
+      updateActiveBadge();
+      fetchPosts();
+    }
+
+    function resetFilters() {
+      STATE.activeKabupaten = 'Semua';
+      STATE.activeKategori = 'Semua';
+      STATE.searchQuery = '';
+      const input = document.getElementById('search-input');
+      if (input) input.value = '';
+      renderKabupatenFilters();
+      renderKategoriFilters();
+      updateActiveBadge();
+      fetchPosts();
+      showToast("Filter pencarian berhasil direset", "info");
+    }
+
+    function updateActiveBadge() {
+      const badge = document.getElementById('active-filter-badge');
+      const chip = document.getElementById('active-filter-chip');
+      const resetBtn = document.getElementById('btn-quick-reset');
+
+      const isDefault = STATE.activeKabupaten === 'Semua' && STATE.activeKategori === 'Semua';
+      const text = isDefault 
+        ? 'Semua Wilayah • Semua Kategori' 
+        : `${STATE.activeKabupaten} • ${STATE.activeKategori}`;
+
+      if (badge) badge.textContent = `Wilayah: ${STATE.activeKabupaten} | Kategori: ${STATE.activeKategori}`;
+      if (chip) chip.textContent = text;
+      if (resetBtn) resetBtn.classList.toggle('hidden', isDefault);
+    }
+
+    /**
+     * Search Input Handling
+     */
+    function setupSearchDebounce() {
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('clear-search');
+      let timer;
+
+      if (input) {
+        input.addEventListener('input', (e) => {
+          clearTimeout(timer);
+          const val = e.target.value.trim();
+          if (clearBtn) {
+            clearBtn.classList.toggle('hidden', val === '');
+          }
+          timer = setTimeout(() => {
+            STATE.searchQuery = val;
+            STATE.currentPage = 1;
+            fetchPosts();
+          }, 350);
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          input.value = '';
+          clearBtn.classList.add('hidden');
+          STATE.searchQuery = '';
+          STATE.currentPage = 1;
+          fetchPosts();
+        });
+      }
+    }
+
+    /**
+     * =========================================================================
+     * DATA FETCHING & RENDERING (GAS RPC WITH LOCAL FALLBACK)
+     * =========================================================================
+     */
+
+    function refreshData() {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('fa-spin');
+      fetchStats();
+      fetchPosts();
+      fetchGallery();
+      setTimeout(() => {
+        if (icon) icon.classList.remove('fa-spin');
+        showToast("Data portal berhasil diperbarui", "success");
+      }, 700);
+    }
+
+    function fetchStats() {
+      if (STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) renderStats(res.data);
+          })
+          .getPortalStats();
+      } else {
+        let posts = STATE.mockPosts;
+        const storedPosts = localStorage.getItem('portal_desa_shared_posts');
+        if (storedPosts) {
+          try { posts = JSON.parse(storedPosts).filter(p => (p.status || 'Published').toLowerCase() === 'published'); } catch(e) {}
+        }
+        let gallery = STATE.mockGallery;
+        const storedGal = localStorage.getItem('portal_desa_shared_gallery');
+        if (storedGal) {
+          try { gallery = JSON.parse(storedGal); } catch(e) {}
+        }
+        renderStats({
+          totalBerita: posts.length,
+          totalDokumentasi: gallery.length,
+          totalKabupaten: 12,
+          totalDesaMitra: 1850
+        });
+      }
+    }
+
+    function renderStats(stats) {
+      document.getElementById('stat-berita').textContent = stats.totalBerita || '0';
+      document.getElementById('stat-dokumentasi').textContent = stats.totalDokumentasi || '0';
+      document.getElementById('stat-kabupaten').textContent = stats.totalKabupaten || '12';
+      document.getElementById('stat-desa').textContent = (stats.totalDesaMitra || 1850) + '+';
+    }
+
+    function fetchPosts() {
+      const filter = {
+        kabupaten: STATE.activeKabupaten,
+        kategori: STATE.activeKategori,
+        search: STATE.searchQuery,
+        page: STATE.currentPage,
+        limit: STATE.postsPerPage
+      };
+
+      if (STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) {
+              renderPosts(res.data, res.total, res.totalPages);
+            } else {
+              renderPosts([], 0, 1);
+            }
+          })
+          .withFailureHandler(err => {
+            showToast("Gagal memuat berita: " + err.toString(), "error");
+            renderPosts([], 0, 1);
+          })
+          .getPosts(filter);
+      } else {
+        // Local Filter Simulation (Sinkronisasi dengan Admin & Urutkan Terbaru)
+        let data = [];
+        const stored = localStorage.getItem('portal_desa_shared_posts');
+        if (stored) {
+          try {
+            data = JSON.parse(stored);
+          } catch(e) {
+            data = [...STATE.mockPosts];
+          }
+        } else {
+          data = [...STATE.mockPosts];
+          localStorage.setItem('portal_desa_shared_posts', JSON.stringify(data));
+        }
+
+        // 1. Filter hanya status 'Published' untuk portal publik
+        data = data.filter(d => (d.status || 'Published').toLowerCase() === 'published');
+
+        // 2. Filter Wilayah (Kabupaten)
+        if (filter.kabupaten !== 'Semua') {
+          data = data.filter(d => (d.kabupaten_kota || '').toLowerCase().includes(filter.kabupaten.toLowerCase()));
+        }
+
+        // 3. Filter Kategori
+        if (filter.kategori !== 'Semua') {
+          data = data.filter(d => (d.kategori || '').toLowerCase() === filter.kategori.toLowerCase());
+        }
+
+        // 4. Filter Search Keyword
+        if (filter.search) {
+          const s = filter.search.toLowerCase();
+          data = data.filter(d => 
+            (d.judul || '').toLowerCase().includes(s) || 
+            (d.konten || '').toLowerCase().includes(s) ||
+            (d.desa || '').toLowerCase().includes(s) ||
+            (d.kabupaten_kota || '').toLowerCase().includes(s)
+          );
+        }
+
+        // 5. URUTKAN DARI TANGGAL TERBARU (Terbaru -> Pertama/Terlama)
+        data.sort((a, b) => {
+          const timeA = new Date(a.updated_at || a.tanggal || 0).getTime();
+          const timeB = new Date(b.updated_at || b.tanggal || 0).getTime();
+          if (timeB !== timeA) return timeB - timeA;
+          return (b.id || '').localeCompare(a.id || '');
+        });
+
+        const total = data.length;
+        const totalPages = Math.ceil(total / filter.limit) || 1;
+        const start = (filter.page - 1) * filter.limit;
+        const paginated = data.slice(start, start + filter.limit);
+        renderPosts(paginated, total, totalPages);
+      }
+    }
+
+    function renderPosts(posts, total, totalPages) {
+      const container = document.getElementById('posts-container');
+      const emptyState = document.getElementById('empty-state');
+      if (!container) return;
+
+      if (!posts || posts.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        renderPagination(0, 1);
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      
+      container.innerHTML = posts.map(post => {
+        return `
+          <article class="tilt-card group">
+            <div class="tilt-inner glass-card rounded-2xl overflow-hidden flex flex-col h-full border border-riau-emerald/20 hover:border-riau-gold/40 transition-all duration-300">
+              
+              <!-- Card Thumbnail -->
+              <div class="relative h-48 w-full overflow-hidden bg-emerald-950">
+                <img 
+                  src="${post.thumbnail_url || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=800&q=80'}" 
+                  alt="${post.judul}" 
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-riau-dark via-transparent to-transparent"></div>
+                <div class="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/90 text-black uppercase tracking-wider backdrop-blur-md shadow-sm">
+                    ${post.kategori || 'Umum'}
+                  </span>
+                </div>
+                <div class="absolute bottom-3 left-3 text-[11px] text-emerald-300 font-medium flex items-center gap-1.5 drop-shadow">
+                  <i class="fa-solid fa-location-dot text-riau-gold"></i>
+                  ${post.desa}, ${post.kabupaten_kota}
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
+                <div class="space-y-2">
+                  <div class="text-[11px] text-gray-400 flex items-center justify-between">
+                    <span><i class="fa-regular fa-clock mr-1 text-riau-gold"></i> ${post.tanggal || 'Terbaru'}</span>
+                    <span class="text-amber-200/80 font-medium">Kabar Desa</span>
+                  </div>
+                  <h3 class="font-royal text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-amber-300 transition-colors">
+                    ${post.judul}
+                  </h3>
+                  <p class="text-xs text-gray-300 line-clamp-3 leading-relaxed font-light">
+                    ${post.konten}
+                  </p>
+                </div>
+
+                <!-- Footer Card Action -->
+                <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span class="text-[11px] text-gray-400">ID: ${post.id || 'BRT'}</span>
+                  <button 
+                    onclick='openReadModal(${JSON.stringify(post).replace(/'/g, "&apos;")})' 
+                    class="text-xs font-semibold text-riau-gold hover:text-amber-300 flex items-center gap-1.5 group-hover:translate-x-1 transition-transform"
+                  >
+                    Baca Berita <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // GSAP Card Reveal Animation & 3D Tilt Binding
+      gsap.from(".tilt-card", {
+        duration: 0.6,
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        ease: "power2.out"
+      });
+
+      bindTiltEffect();
+      renderPagination(total, totalPages);
+    }
+
+    /**
+     * 3D Tilt Effect on News Cards via Vanilla Mouse Tracker
+     */
+    function bindTiltEffect() {
+      const cards = document.querySelectorAll('.tilt-card');
+      cards.forEach(card => {
+        const inner = card.querySelector('.tilt-inner');
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const rotateX = -(y / rect.height) * 12;
+          const rotateY = (x / rect.width) * 12;
+          inner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+      });
+    }
+
+    /**
+     * Pagination Renderer
+     */
+    function renderPagination(total, totalPages) {
+      const container = document.getElementById('pagination-container');
+      if (!container) return;
+
+      if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+      }
+
+      let html = `
+        <button 
+          onclick="changePage(${STATE.currentPage - 1})" 
+          ${STATE.currentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : 'class="hover:bg-riau-gold hover:text-black"'} 
+          class="px-4 py-2 rounded-xl border border-riau-gold/30 bg-riau-card text-xs text-white transition flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> Sebelumnya
+        </button>
+
+        <span class="text-xs text-gray-400 font-medium px-2">
+          Halaman <strong class="text-riau-gold">${STATE.currentPage}</strong> dari <strong>${totalPages}</strong>
+        </span>
+
+        <button 
+          onclick="changePage(${STATE.currentPage + 1})" 
+          ${STATE.currentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed"' : 'class="hover:bg-riau-gold hover:text-black"'} 
+          class="px-4 py-2 rounded-xl border border-riau-gold/30 bg-riau-card text-xs text-white transition flex items-center gap-1.5"
+        >
+          Selanjutnya <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function changePage(page) {
+      STATE.currentPage = page;
+      fetchPosts();
+      document.getElementById('kabar-desa').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * =========================================================================
+     * GALERI DOKUMENTASI KEGIATAN DESA
+     * =========================================================================
+     */
+    function fetchGallery() {
+      if (STATE.isGAS) {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.success) renderGallery(res.data);
+          })
+          .getGallery({});
+      } else {
+        let items = [];
+        const stored = localStorage.getItem('portal_desa_shared_gallery');
+        if (stored) {
+          try { items = JSON.parse(stored); } catch(e) { items = [...STATE.mockGallery]; }
+        } else {
+          items = [...STATE.mockGallery];
+          localStorage.setItem('portal_desa_shared_gallery', JSON.stringify(items));
+        }
+        items.sort((a, b) => {
+          const timeA = new Date(a.updated_at || a.tanggal || 0).getTime();
+          const timeB = new Date(b.updated_at || b.tanggal || 0).getTime();
+          if (timeB !== timeA) return timeB - timeA;
+          return (b.id || '').localeCompare(a.id || '');
+        });
+        renderGallery(items);
+      }
+    }
+
+    function renderGallery(items) {
+      const container = document.getElementById('gallery-container');
+      if (!container) return;
+
+      if (!items || items.length === 0) {
+        container.innerHTML = '<div class="col-span-full text-center py-8 text-xs text-gray-500">Belum ada foto dokumentasi kegiatan desa.</div>';
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        return `
+          <div 
+            onclick="openLightbox('${item.foto_url}', '${item.judul_kegiatan.replace(/'/g, "\\'")}', '${item.lokasi_desa.replace(/'/g, "\\'")}')" 
+            class="group relative h-64 rounded-2xl overflow-hidden cursor-pointer border border-emerald-900/40 hover:border-riau-gold/50 transition-all duration-300 shadow-lg"
+          >
+            <img 
+              src="${item.foto_url}" 
+              alt="${item.judul_kegiatan}" 
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-riau-obsidian via-riau-obsidian/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity"></div>
+            
+            <!-- Floating Zoom Icon -->
+            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-riau-obsidian/70 text-riau-gold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <i class="fa-solid fa-expand text-xs"></i>
+            </div>
+
+            <!-- Overlay Content -->
+            <div class="absolute bottom-4 left-4 right-4 space-y-1">
+              <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/20">
+                ${item.lokasi_desa}
+              </span>
+              <h4 class="font-royal text-sm font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-1">
+                ${item.judul_kegiatan}
+              </h4>
+              <p class="text-[11px] text-gray-300 line-clamp-2 leading-relaxed">
+                ${item.deskripsi || ''}
+              </p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * =========================================================================
+     * MODAL BACA BERITA DETAIL (READER MODAL)
+     * =========================================================================
+     */
+    let currentArticleData = null;
+
+    function openReadModal(post) {
+      currentArticleData = post;
+      const modal = document.getElementById('read-modal');
+      const card = document.getElementById('read-modal-card');
+      if (!modal || !card) return;
+      
+      const imgEl = document.getElementById('read-modal-img');
+      if (imgEl) {
+        imgEl.src = post.thumbnail_url || 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=1200&q=80';
+      }
+      
+      document.getElementById('read-modal-title').textContent = post.judul || 'Kabar Desa';
+      document.getElementById('read-modal-category').textContent = post.kategori || 'Umum';
+      document.getElementById('read-modal-kabupaten').textContent = post.kabupaten_kota ? `Kab. ${post.kabupaten_kota}` : 'Provinsi Riau';
+      
+      const kecStr = post.kecamatan ? `Kec. ${post.kecamatan}, ` : '';
+      const desaStr = post.desa ? `${post.desa}, ` : '';
+      document.getElementById('read-modal-desa').textContent = `${desaStr}${kecStr}Kab. ${post.kabupaten_kota || 'Riau'}`;
+      
+      document.getElementById('read-modal-date').textContent = post.tanggal || 'Terbaru';
+      
+      const authorEl = document.getElementById('read-modal-author');
+      if (authorEl) {
+        authorEl.textContent = post.disetor_oleh || 'Tim Redaksi Lancang Kuning';
+      }
+      
+      const idEl = document.getElementById('read-modal-id');
+      if (idEl) {
+        idEl.textContent = post.id || 'BRT-RIAU';
+      }
+
+      // Format Paragraphs secara estetis & rapi
+      const contentEl = document.getElementById('read-modal-content');
+      if (contentEl) {
+        const raw = post.konten || '';
+        const paragraphs = raw.split(/\n+/).filter(p => p.trim() !== '');
+        if (paragraphs.length > 0) {
+          contentEl.innerHTML = paragraphs.map((p, idx) => {
+            if (idx === 0) {
+              return `<p class="first-letter:text-3xl first-letter:font-bold first-letter:text-amber-400 first-letter:mr-2 first-letter:float-left text-gray-200 text-sm sm:text-base leading-relaxed font-light">${p}</p>`;
+            }
+            return `<p class="text-gray-200 text-sm sm:text-base leading-relaxed font-light">${p}</p>`;
+          }).join('');
+        } else {
+          contentEl.innerHTML = `<p class="text-gray-300 text-sm sm:text-base leading-relaxed font-light">${raw}</p>`;
+        }
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      gsap.fromTo(card, 
+        { scale: 0.92, opacity: 0, y: 25 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
+      );
+    }
+
+    function closeReadModal() {
+      const modal = document.getElementById('read-modal');
+      const card = document.getElementById('read-modal-card');
+      if (!modal || !card) return;
+      
+      gsap.to(card, {
+        scale: 0.95,
+        opacity: 0,
+        y: 15,
+        duration: 0.22,
+        ease: "power2.in",
+        onComplete: () => {
+          modal.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    /**
+     * FITUR BAGIKAN & SALIN LINK BERITA
+     */
+    function shareArticle(type) {
+      if (!currentArticleData) return;
+      const title = currentArticleData.judul || "Kabar Desa Riau";
+      const desa = currentArticleData.desa || "Desa di Riau";
+      const kab = currentArticleData.kabupaten_kota || "Riau";
+      const currentUrl = window.location.href.split('#')[0];
+      
+      if (type === 'wa') {
+        const shareText = `*${title}*\n\nKabar terkini dan kemajuan dari ${desa}, Kab. ${kab}.\n\nBaca selengkapnya di Portal Desa Se-Provinsi Riau:\n${currentUrl}`;
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+        window.open(waUrl, '_blank');
+        showToast("Membuka WhatsApp untuk membagikan berita...", "success");
+      } else {
+        const copyText = `${title} - Baca di: ${currentUrl}`;
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(copyText).then(() => {
+            showToast("Tautan berita berhasil disalin ke clipboard!", "success");
+          }).catch(() => {
+            fallbackCopyText(copyText);
+          });
+        } else {
+          fallbackCopyText(copyText);
+        }
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand('copy');
+        showToast("Tautan berita berhasil disalin!", "success");
+      } catch(e) {
+        showToast("Silakan salin tautan secara manual", "info");
+      }
+      document.body.removeChild(temp);
+    }
+
+    /**
+     * =========================================================================
+     * KONTAK ADMIN & REDAKSI VIA WHATSAPP (NOMOR: 082288424345)
+     * =========================================================================
+     */
+    const WA_ADMIN_NUMBER = "6282288424345"; // Nomor WhatsApp Admin: 082288424345 / +62 822-8842-4345
+
+    /**
+     * Klik Langsung Membuka Chat WhatsApp Admin
+     */
+    function contactAdminWA() {
+      const text = "Halo Admin Redaksi Portal Desa Se-Provinsi Riau, saya ingin berkonsultasi / menyetorkan kabar kegiatan desa.";
+      const url = `https://wa.me/${WA_ADMIN_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      showToast("Membuka WhatsApp Admin Redaksi (+62 822-8842-4345)...", "success");
+    }
+
+    function openWAModal() {
+      // Direct WA chat sesuai permintaan pengguna
+      contactAdminWA();
+    }
+
+    function closeWAModal() {
+      const modal = document.getElementById('wa-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function sendToWhatsApp() {
+      contactAdminWA();
+    }
+
+    /**
+     * =========================================================================
+     * LIGHTBOX PREVIEW
+     * =========================================================================
+     */
+    function openLightbox(url, title, subtitle) {
+      const modal = document.getElementById('lightbox-modal');
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-title').textContent = title;
+      document.getElementById('lightbox-subtitle').textContent = subtitle;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    /**
+     * =========================================================================
+     * TOAST NOTIFICATION UTILITY
+     * =========================================================================
+     */
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      toast.className = `p-4 rounded-xl shadow-2xl border text-xs font-semibold flex items-center gap-3 backdrop-blur-md transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-auto ${
+        isSuccess 
+          ? 'bg-emerald-950/90 border-riau-gold/40 text-amber-200' 
+          : 'bg-red-950/90 border-red-500/40 text-red-200'
+      }`;
+
+      toast.innerHTML = `
+        <i class="${isSuccess ? 'fa-solid fa-circle-check text-riau-gold text-base' : 'fa-solid fa-triangle-exclamation text-red-400 text-base'}"></i>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+
+      // Animate in
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      // Animate out after 3.5s
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
